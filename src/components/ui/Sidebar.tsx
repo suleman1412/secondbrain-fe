@@ -1,6 +1,6 @@
 import React from "react";
 import Heading from "./Heading";
-import { Brain, PanelLeftClose, PanelLeftOpen, SquarePlay, File,Image, AudioLines, Grid2X2 } from "lucide-react";
+import { Brain, X, SquarePlay, File,Image, AudioLines, Grid2X2, ChevronRight } from "lucide-react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { allContentAtom, filteredContentAtom, isLoggedIn } from "../recoil/atoms";
 
@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     }
     return (
         <div 
-        className={`fixed top-0 left-0 bottom-0 z-50 bg-cardColor-2 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'w-40 md:w-60 ' : 'w-10 bg-transparent'}`}
+        className={`fixed top-0 left-0 bottom-0 z-50 bg-cardColor-2 shadow-lg transition-all duration-300 ease-in-out ${isOpen ? 'w-40 md:w-60 ' : 'w-0'}`}
     >
         <div className="flex flex-col h-full">
             <div className={`flex items-center justify-between px-2 py-4 ${isOpen && 'border-b-4 border-cardColor-1 '}`}>
@@ -44,8 +44,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                             BigBrain
                         </Heading>
                     }
-                    <button onClick={toggleSidebar}>
-                        {isOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
+                    <button className="p-1 hover:bg-cardColor-1 rounded-lg" onClick={toggleSidebar}>
+                        {isOpen ? <X /> : <ChevronRight />}
                     </button>
                 </div>
                 
