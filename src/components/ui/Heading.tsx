@@ -3,11 +3,12 @@ interface HeadingProps {
     children: React.ReactNode
     variant: "primary" | "secondary" 
     className?: string
-    size?: "sm" | "md" | "lg" | "xs"
+    size?: "sm" | "md" | "lg" | "xs" | "jsm"
 }
 
 const sizeStyles = {
     "xs": "text-[0.7rem] md:text-[0.8rem] lg:text-[1rem]",
+    "jsm": "text-[1.1rem] md:text-[1.3rem] lg:text-[1.5rem]",
     "sm": "text-[1.2rem] md:text-[1.5rem] lg:text-[2rem]",
     "md": "text-[2rem] md:text-[2.3rem] lg:text-[2.5rem]",
     "lg": "text-[2.5rem] md:text-[3.5rem] lg:text-[4rem]"
