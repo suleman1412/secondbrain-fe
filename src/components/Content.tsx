@@ -25,7 +25,7 @@ const Content: React.FC<ContentProps> = ({
     
     
     return (
-        <div className={`content px-6 py-5 flex-1 ml-6 md:ml-10 h-screen  ${sideOpen && 'pointer-events-none opacity-80 blur-[1px]'}`}>
+        <div className={`content px-6 py-5 flex-1 mt-8 md:mt-10 h-screen  ${sideOpen && 'pointer-events-none opacity-80 blur-[1px]'}`}>
         <div className="flex justify-between items-center gap-2">
           <Heading variant="primary" size={`${isMobile ? 'sm' : 'md'}`}>What I'm Learning</Heading>
           <div className="flex gap-2 md:gap-4">
