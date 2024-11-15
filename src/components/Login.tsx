@@ -6,8 +6,9 @@ import { ZodError } from 'zod'
 import axios from 'axios'
 import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
-import { currTab, isLoggedIn } from './recoil/atoms'
+import { isLoggedIn } from './recoil/atoms'
 import FormContainer from './ui/FormContainer'
+import { useNavigate } from 'react-router-dom'
 
 interface FormErrors {
   username?: string
@@ -15,12 +16,12 @@ interface FormErrors {
 }
 
 const Login = () => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
-  const setCurrTab = useSetRecoilState(currTab);
   const setisLoggedIn = useSetRecoilState(isLoggedIn)
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -41,9 +42,9 @@ const Login = () => {
         setShowAlert(true)
         setisLoggedIn(true)
         setTimeout(() => {
-          setCurrTab('dashboard')
+          navigate('dashboard')
           setShowAlert(false)
-        }, 3000)
+        }, 1000)
       }
       setUsername('')
       setPassword('')
