@@ -2,13 +2,14 @@ import { useState } from 'react';
 import Button from './ui/Button'
 import Input from './ui/Input' 
 import Heading from './ui/Heading';
-import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { heroTitleinput, heroLinkinput } from './recoil/atoms';
+import { heroTitleinput, heroLinkinput, currTab } from './recoil/atoms';
 
 const Hero = () => {
    const setHeroTitle = useSetRecoilState(heroTitleinput);
    const setHeroLink = useSetRecoilState(heroLinkinput);
+   const setCurrTab = useSetRecoilState(currTab)
+
    const [tempTitle, setTempTitle] = useState<string | null>(null);
    const [tempLink, setTempLink] = useState<string | null>(null);
 
@@ -26,6 +27,7 @@ const Hero = () => {
    const handleGetStarted = () => {
        setHeroTitle(tempTitle);
        setHeroLink(tempLink);
+       setCurrTab('login')
    }
    return (
        <div className='my-12 mx-auto w-full md:w-[70%] flex flex-col text-center items-center gap-12 overflow-x-hidden'>
@@ -41,6 +43,7 @@ const Hero = () => {
                 <Heading 
                     variant='secondary'
                     size='xs'
+                    className='mx-auto'
                 >
                     Organize your thoughts, one link at a time!
                 </Heading>
@@ -55,11 +58,9 @@ const Hero = () => {
                     placeholder='Link...' 
                 />
                 <div className='mx-auto'>
-                    <Link to='/login' onClick={handleGetStarted}>
-                        <Button variant='secondary'>
-                            <h1 className='text-[0.8rem] md:text-[1rem] font-medium'>Get Started</h1>
-                        </Button>        
-                    </Link>
+                    <Button variant='secondary' onClick={handleGetStarted}>
+                        <h1 className='text-[0.8rem] md:text-[1rem] font-medium'>Get Started</h1>
+                    </Button>        
                 </div>
             </div>
         </div>

@@ -14,3 +14,8 @@ export const heroLinkinput = atom<string | null>({
     key: 'inputLink',
     default: null
 })
+
+export const currTab = atom<string | null>({
+    key: 'currTab',
+    default: ''
+})

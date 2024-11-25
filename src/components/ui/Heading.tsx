@@ -14,7 +14,7 @@ const sizeStyles = {
 }
 const variantStyles = {
     "primary" : "font-font1 font-semibold tracking-tight text-text ",
-    "secondary": "mx-auto font-semibold text-border",
+    "secondary": "font-semibold text-border",
 }
 
 const Heading: React.FC<HeadingProps> = (

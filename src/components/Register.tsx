@@ -5,8 +5,9 @@ import { AuthSchema } from '../lib/schemas'
 import { ZodError } from 'zod'
 import axios from 'axios'
 import Heading from './ui/Heading'
-import { useNavigate } from 'react-router-dom'
 import Alert from './ui/Alert'
+import { useSetRecoilState } from 'recoil'
+import { currTab } from './recoil/atoms'
 
 interface FormErrors {
   username?: string
@@ -14,12 +15,13 @@ interface FormErrors {
 }
 
 const Register = () => {
-  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
+  const setCurrTab = useSetRecoilState(currTab);
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -36,8 +38,9 @@ const Register = () => {
       if (response.status === 200) {
         setShowAlert(true)
         setTimeout(() => {
+          setCurrTab('dashboard')
           setShowAlert(false)
-          navigate('/login')
+          
         }, 3000)
       }
 
@@ -76,8 +79,8 @@ const Register = () => {
 
   return (
     <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 '>
-      <div className='min-w-72 border-2 border-border p-6 rounded-lg flex flex-col gap-4'>
-        <Heading variant='primary' size='sm'>
+      <div className='min-w-72 w-[30em] border-2 border-border p-6 rounded-lg flex flex-col gap-4'>
+        <Heading variant='primary' size='md'>
           Create an account
         </Heading>
         <Heading variant='secondary' size='xs'>
@@ -90,6 +93,8 @@ const Register = () => {
               onChange={handleUsernameChange}
               placeholder='Username...'
               disabled={isLoading}
+              label={'Username'}
+              inputId={'Username'}
             />
             {errors.username && (
               <p className='text-red-500 text-sm mt-1'>{errors.username}</p>
@@ -103,6 +108,8 @@ const Register = () => {
               type='password'
               placeholder='Password...'
               disabled={isLoading}
+              label={'Password'}
+              inputId={'Password'}
             />
             {errors.password && (
               <p className='text-red-500 text-sm mt-1'>{errors.password}</p>

@@ -1,35 +1,43 @@
-import { Brain } from "lucide-react"
-import { ReactElement} from "react"
-import Button from "./ui/Button"
-import { Link } from 'react-router-dom';
+import { Brain } from "lucide-react";
+import Button from "./ui/Button";
+import { useSetRecoilState } from "recoil";
+import { currTab } from "./recoil/atoms";
 
+export const NavBar = () => {
+    const setCurrTab = useSetRecoilState(currTab);
 
-export const NavBar = (): ReactElement => {
-  
-    return(
-        <div className='flex justify-between items-center text-text '>
-            <div className='brand flex gap-2 items-center '>
-                <Link to='/'>
-                    <Brain className="size-6 md:size-10"/>
-                </Link>
-                
-                <Link to='/'>
-                    <h1 className='font-font1 font-semibold text-weigh text-[1.25rem] md:text-[2rem] tracking-tight'>Second Brain</h1>
-                </Link>
-                
+    return (
+        <div className="flex justify-between items-center text-text">
+            <div className="brand flex gap-2 items-center">
+                <Brain 
+                    className="w-6 h-6 md:w-10 md:h-10 cursor-pointer" 
+                    onClick={() => setCurrTab("")}
+                />
+                <h1
+                    className="font-font1 font-semibold text-weigh text-[1.5rem] md:text-[2.5rem] tracking-tight cursor-pointer"
+                    onClick={() => setCurrTab("")}
+                >
+                    BigBrain
+                </h1>
             </div>
-            <div className='flex gap-4 text-[0.6rem] md:text-[0.8rem] font-medium'>
-                <Link to='/login'>
-                    <Button variant='secondary'>
-                        Login
-                    </Button>
-                </Link>
-                <Link to='/register'>
-                    <Button variant='primary'>
-                        Register
-                    </Button>
-                </Link>
+
+            <div className="flex gap-4 text-[0.6rem] md:text-[0.8rem] font-medium">
+                <Button 
+                    variant="secondary" 
+                    onClick={() => {
+                        console.log("Login pressed")
+                        setCurrTab("login")
+                    }}
+                >
+                    Login
+                </Button>
+                <Button 
+                    variant="primary" 
+                    onClick={() => setCurrTab("register")}
+                >
+                    Register
+                </Button>
             </div>
         </div>
-    )
-}
+    );
+};
