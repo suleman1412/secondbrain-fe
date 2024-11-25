@@ -7,7 +7,7 @@ import axios from 'axios'
 import Heading from './ui/Heading'
 import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
-import { currTab } from './recoil/atoms'
+import { currTab, isLoggedIn } from './recoil/atoms'
 
 interface FormErrors {
   username?: string
@@ -21,6 +21,7 @@ const Login = () => {
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
   const setCurrTab = useSetRecoilState(currTab);
+  const setisLoggedIn = useSetRecoilState(isLoggedIn)
 
 
 
@@ -36,31 +37,31 @@ const Login = () => {
         'http://localhost:3000/v1/user/login',
         validatedData
       )
-      localStorage.setItem('token', response.data.token)
-      console.log(response.data.token)
       if (response.status === 200) {
+        localStorage.setItem('token', response.data.token)
         setShowAlert(true)
+        setisLoggedIn(true)
         setTimeout(() => {
           setCurrTab('dashboard')
           setShowAlert(false)
         }, 3000)
       }
-
       setUsername('')
       setPassword('')
     } catch (error) {
-      if (error instanceof ZodError) {
-        const formErrors: FormErrors = {}
-        error.errors.forEach((err) => {
-          if (err.path[0]) {
-            formErrors[err.path[0] as keyof FormErrors] = err.message
-          }
-        })
-        setErrors(formErrors)
-      } else {
-        setErrors({ password: 'Server not responding, please try again later.' })
-      }
-    } finally {
+        console.log(error)
+        if (error instanceof ZodError) {
+          const formErrors: FormErrors = {}
+          error.errors.forEach((err) => {
+            if (err.path[0]) {
+              formErrors[err.path[0] as keyof FormErrors] = err.message
+            }
+          })
+          setErrors(formErrors)
+        }else{
+          setErrors({ password: 'Something went wrong. Please try again later' })
+        }
+    }  finally {
       setIsLoading(false)
     }
   }

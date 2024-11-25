@@ -38,7 +38,7 @@ const Register = () => {
       if (response.status === 200) {
         setShowAlert(true)
         setTimeout(() => {
-          setCurrTab('dashboard')
+          setCurrTab('login')
           setShowAlert(false)
           
         }, 3000)

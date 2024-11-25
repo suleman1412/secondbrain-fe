@@ -25,7 +25,6 @@ export const NavBar = () => {
                 <Button 
                     variant="secondary" 
                     onClick={() => {
-                        console.log("Login pressed")
                         setCurrTab("login")
                     }}
                 >
