@@ -19,7 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
-  const [showAlert, setShowAlert] = useState(true)
+  const [showAlert, setShowAlert] = useState(false)
   const setCurrTab = useSetRecoilState(currTab);
   const setisLoggedIn = useSetRecoilState(isLoggedIn)
 

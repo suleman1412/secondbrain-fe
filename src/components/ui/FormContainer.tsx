@@ -14,6 +14,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
   subtitle, 
   children, 
   onSubmit, 
+  // @ts-ignore
   isLoading = false,
 }) => {
   return (
