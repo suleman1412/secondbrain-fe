@@ -4,7 +4,6 @@ import { useState, FormEvent } from 'react'
 import { AuthSchema } from '../lib/schemas'
 import { ZodError } from 'zod'
 import axios from 'axios'
-import Heading from './ui/Heading'
 import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
 import { currTab, isLoggedIn } from './recoil/atoms'
@@ -82,8 +81,6 @@ const Login = () => {
   }
 
   return (
-    // <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-      // <div className='min-w-72 md:w-[20em] border-2 border-border p-6 rounded-lg flex flex-col gap-4'>
     <div>  
       <FormContainer
       title="Login"

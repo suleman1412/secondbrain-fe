@@ -1,6 +1,5 @@
 import React, { FormEvent } from 'react';
 import Heading from './Heading';
-import Alert from './Alert';
 
 interface FormContainerProps {
     title: string;
