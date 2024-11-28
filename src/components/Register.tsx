@@ -4,10 +4,10 @@ import { useState, FormEvent } from 'react'
 import { AuthSchema } from '../lib/schemas'
 import { ZodError } from 'zod'
 import axios from 'axios'
-import Heading from './ui/Heading'
 import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
 import { currTab } from './recoil/atoms'
+import FormContainer from './ui/FormContainer'
 
 interface FormErrors {
   username?: string
@@ -38,7 +38,7 @@ const Register = () => {
       if (response.status === 200) {
         setShowAlert(true)
         setTimeout(() => {
-          setCurrTab('dashboard')
+          setCurrTab('login')
           setShowAlert(false)
           
         }, 3000)
@@ -78,15 +78,13 @@ const Register = () => {
   }
 
   return (
-    <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 '>
-      <div className='min-w-72 w-[30em] border-2 border-border p-6 rounded-lg flex flex-col gap-4'>
-        <Heading variant='primary' size='md'>
-          Create an account
-        </Heading>
-        <Heading variant='secondary' size='xs'>
-          Enter your username below to create your account
-        </Heading>
-        <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+    <div>
+        <FormContainer
+          title="Create an Account"
+          subtitle="Join us today!"
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+        >
           <div>
             <Input
               value={username}
@@ -100,7 +98,7 @@ const Register = () => {
               <p className='text-red-500 text-sm mt-1'>{errors.username}</p>
             )}
           </div>
-
+    
           <div>
             <Input
               value={password}
@@ -115,17 +113,16 @@ const Register = () => {
               <p className='text-red-500 text-sm mt-1'>{errors.password}</p>
             )}
           </div>
-
+    
           <Button type='submit' variant='primary' disabled={isLoading}>
             {isLoading ? 'Registering...' : 'Register'}
           </Button>
-        </form>
+        </FormContainer>
+        {showAlert && (
+          <Alert text='Account Created!' />
+        )}
       </div>
-      <div className='text-center flex justify-center mt-20'>
-        {showAlert && <Alert text='User Registered Successfully!' />}
-      </div>
-    </div>
-  )
-}
+  );
+};
 
 export default Register

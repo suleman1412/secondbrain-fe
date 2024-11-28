@@ -23,7 +23,7 @@ const Landing = () => {
     return (
         <div className="flex flex-col min-h-screen p-2 mx-auto max-w-7xl ">
             <NavBar />
-            <div className="flex-1">
+            <div className="flex flex-1 justify-center items-center">
                 {renderContent()}
             </div>
             <Footer />
