@@ -5,7 +5,6 @@ import Hero from './Hero';
 import { NavBar } from './NavBar';
 import Login from './Login';
 import Register from './Register';
-import Dashboard from './Dashboard';
 
 const Landing = () => {
     const currentTab = useRecoilValue(currTab);
@@ -16,8 +15,6 @@ const Landing = () => {
                 return <Login />;
             case 'register':
                 return <Register />;
-            case 'dashboard': 
-                return <Dashboard />
             default:
                 return <Hero />;
         }

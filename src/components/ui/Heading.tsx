@@ -3,7 +3,7 @@ interface HeadingProps {
     children: React.ReactNode
     variant: "primary" | "secondary" 
     className?: string
-    size: "sm" | "md" | "lg" | "xs"
+    size?: "sm" | "md" | "lg" | "xs"
 }
 
 const sizeStyles = {
@@ -22,13 +22,13 @@ const Heading: React.FC<HeadingProps> = (
         children,
         variant,
         className, 
-        size
+        size='sm'
     }
 ) => {
     return(
-        <h1 className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}>
+        <div className={`${variantStyles[variant]} ${sizeStyles[size]} ${className}`}>
             {children}
-        </h1>
+        </div>
     )
 }
 

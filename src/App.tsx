@@ -1,10 +1,13 @@
+import { useRecoilValue } from "recoil"
 import Landing from "./components/Landing"
-import Layout from "./components/Layout"
+import { isLoggedIn } from "./components/recoil/atoms"
+import Dashboard from "./components/Dashboard"
 
 function App() {
+  const UserLogin = useRecoilValue(isLoggedIn)
   return (
     <div className="min-h-screen w-full overflow-x-hidden">
-      <Landing />
+        { UserLogin ? <Dashboard/> : <Landing />}
     </div>
   )
 }

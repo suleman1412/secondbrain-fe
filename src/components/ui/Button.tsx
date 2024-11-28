@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     ...props
 }) => {
-    const baseStyle = "px-3 py-1 md:px-5 md:py-2 rounded antialiased tracking-wide font-semibold";
+    const baseStyle = "px-2 py-1 md:px-3 md:py-2 rounded antialiased tracking-wide font-semibold";
 
     return (
         <button
