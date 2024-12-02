@@ -19,6 +19,10 @@ export default {
           1: "#1B1818",
           2 : "#1c1d1b"
         },
+        cardColor: {
+          1: '#262626',
+          2: '#404040'
+        },
         border: "#404040",
         text: "#FFFFFF",
         darkBackground: "#1B1818"

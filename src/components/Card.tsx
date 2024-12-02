@@ -31,7 +31,7 @@ const Card: React.FC<ContentType> = ({
     createdAt,
 }) => {
     return (
-        <div className="bg-secondary-2 border-2 border-border rounded-lg px-4 py-2 shadow-md">
+        <div className="bg-gradient-to-b from-cardColor-1 to-cardColor-2 border-2 border-border rounded-lg px-4 py-2 shadow-md">
             <div className="flex gap-2 items-center">
                 {TypeStyles[type]}
                 <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -42,9 +42,9 @@ const Card: React.FC<ContentType> = ({
                         tags.map((tag) => (
                             <li
                                 key={tag._id}
-                                className="bg-slate-900 text-sm px-2 py-1 rounded"
+                                className="bg-slate-900 text-xs px-2 py-1 rounded"
                             >
-                                {tag.title}
+                                # {tag.title}
                             </li>
                         ))
                     ) : (
@@ -53,13 +53,12 @@ const Card: React.FC<ContentType> = ({
                 </ul>
             </div>
             
-            {/* Link */}
             {link && (
                 <a
                     href={link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 underline text-sm mb-2 inline-block"
+                    className="hover:text-black underline text-sm mb-2 inline-block"
                 >
                     View Content
                 </a>
@@ -67,7 +66,7 @@ const Card: React.FC<ContentType> = ({
             
             {/* Created At */}
             {createdAt && (
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-cardColor-1 my-2">
                     <strong>Created At:</strong> {new Date(createdAt).toLocaleDateString()}
                 </p>
             )}

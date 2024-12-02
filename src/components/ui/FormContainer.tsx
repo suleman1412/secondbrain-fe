@@ -2,23 +2,25 @@ import React, { FormEvent } from 'react';
 import Heading from './Heading';
 
 interface FormContainerProps {
-    title: string;
-    subtitle: string;
+    title?: string;
+    subtitle?: string;
     children: React.ReactNode;
-    onSubmit: (e: FormEvent<HTMLFormElement>) => void | Promise<void>;
+    onSubmit?: (e: FormEvent<HTMLFormElement>) => void | Promise<void>;
     isLoading?: boolean;
+    className?: string;
 }
 
 const FormContainer: React.FC<FormContainerProps> = ({
-  title, 
-  subtitle, 
+  title='', 
+  subtitle='', 
   children, 
   onSubmit, 
   // @ts-ignore
   isLoading = false,
+  className = ''
 }) => {
   return (
-    <div className='container flex flex-col justify-center items-center mx-auto'>
+    <div className='container flex flex-col justify-center items-center mx-auto text-black'>
       <div className='formContainer min-w-[15em] md:min-w-[30em] border-2 border-border p-4 rounded-md flex flex-col gap-2'>    
         <Heading variant='primary' size='md'>
           {title}
