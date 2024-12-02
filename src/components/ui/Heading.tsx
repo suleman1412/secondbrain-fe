@@ -21,7 +21,7 @@ const Heading: React.FC<HeadingProps> = (
     {
         children,
         variant,
-        className, 
+        className='', 
         size='sm'
     }
 ) => {
