@@ -19,3 +19,8 @@ export const currTab = atom<string | null>({
     key: 'currTab',
     default: ''
 })
+
+export const shareLink = atom<string>({
+    key: 'shareLink',
+    default: ''
+})

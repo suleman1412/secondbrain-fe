@@ -1,5 +1,5 @@
-import { useRecoilValue } from "recoil";
-import { isLoggedIn } from "./recoil/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isLoggedIn, shareLink } from "./recoil/atoms";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Sidebar from "./ui/Sidebar";
@@ -8,16 +8,19 @@ import Heading from "./ui/Heading";
 import Button from "./ui/Button";
 import { PlusIcon, Share2Icon } from "lucide-react";
 import ContentForm from "./ContentForm";
+import ShareModal from "./ShareModal";
 
 const Dashboard = () => {
   const userLogin = useRecoilValue(isLoggedIn);
+  const setShareLink = useSetRecoilState(shareLink)
   const [content, setContent] = useState<ContentType[]>([]);
   const token = localStorage.getItem("token") || "";
   const [sideOpen, setSideOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [shareLink, setShareLink] = useState<string | null>(null);
+
+
   const [modalStatus, setModalStatus] = useState(false);
-  const [incomingContent, setIncomingContent] = useState(false)
+  const [shareModal, setShareModal] = useState(false)
   const fetchData = async () => {
     if (!userLogin || !token) {
       console.log("User is not logged in or token is missing");
@@ -39,7 +42,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, [userLogin, token, incomingContent]);
+  }, [userLogin, token]);
 
 
 
@@ -53,6 +56,7 @@ const Dashboard = () => {
 
   const handleShareLink = async () => {
     setIsLoading(true);
+    setShareModal(true)
     try {
       const response = await axios.post(
         "http://localhost:3000/v1/brain/share",
@@ -73,7 +77,7 @@ const Dashboard = () => {
       <Sidebar isOpen={sideOpen} toggleSidebar={toggleSidebar} />
       <div className="content px-6 py-5 flex-1">
         <div className="flex justify-between items-center">
-          <Heading variant="primary" size="md">All Notes</Heading>
+          <Heading variant="primary" size="md">What I'm Learning</Heading>
           <div className="flex gap-4">
             <Button
               variant="secondary"
@@ -109,6 +113,9 @@ const Dashboard = () => {
       </div>
       {modalStatus && (
         <ContentForm onClose={() => setModalStatus(false)} onSubmit={handleContentSubmit} />
+      )}
+      {shareModal && (
+        <ShareModal onClick={() => setShareModal(false)}/>
       )}
     </div>
   );

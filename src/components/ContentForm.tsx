@@ -117,13 +117,13 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
                 placeholder="Add a tag"
                 className="flex-grow p-2 border rounded-l"
               />
-              <button
+<Button 
                 type="button"
+                variant="secondary"
                 onClick={handleAddTag}
-                className="bg-cardColor-2 text-white px-4 rounded-r"
               >
                 Add
-              </button>
+              </Button>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
               {tags.map((tag) => (

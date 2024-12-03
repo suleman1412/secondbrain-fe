@@ -15,9 +15,6 @@ const FormContainer: React.FC<FormContainerProps> = ({
   subtitle='', 
   children, 
   onSubmit, 
-  // @ts-ignore
-  isLoading = false,
-  className = ''
 }) => {
   return (
     <div className='container flex flex-col justify-center items-center mx-auto text-black'>
