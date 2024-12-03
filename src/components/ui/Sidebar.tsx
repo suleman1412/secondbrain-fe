@@ -1,6 +1,6 @@
 import React from "react";
 import Heading from "./Heading";
-import { Brain, PanelLeftClose, PanelLeftOpen, Bird, SquarePlay, File, Link2, Hash   } from "lucide-react";
+import { Brain, PanelLeftClose, PanelLeftOpen, SquarePlay, File,Image, AudioLines   } from "lucide-react";
 import Label from "./Label";
 import Button from "./Button";
 import { useSetRecoilState } from "recoil";
@@ -47,8 +47,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 (   <>
                         <div className="categories flex-1 mt-8 flex flex-col gap-4 px-2">
                             <Label>
-                                <Bird />
-                                Tweets
+                                <Image />
+                                Image
                             </Label>
                             <Label>
                                 <SquarePlay />
@@ -56,15 +56,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                             </Label>
                             <Label>
                                 <File />
-                                Documents
+                                Article
                             </Label>
                             <Label>
-                                <Link2 />
-                                Links
-                            </Label>
-                            <Label>
-                                <Hash />
-                                Tags
+                                <AudioLines />
+                                Audio
                             </Label>
                         </div>
                         <div>
