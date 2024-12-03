@@ -29,7 +29,7 @@ const Dashboard = () => {
 
     setIsLoading(true);
     try {
-      const response = await axios.get("http://localhost:3000/v1/content/", {
+      const response = await axios.get("https://secondbrain-gpst.onrender.com/v1/content/", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setContent(response.data.allContent || []);
@@ -59,12 +59,12 @@ const Dashboard = () => {
     setShareModal(true)
     try {
       const response = await axios.post(
-        "http://localhost:3000/v1/brain/share",
+        "https://secondbrain-gpst.onrender.com/v1/brain/share",
         { share: true },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const hashedString = response.data.link;
-      setShareLink(`http://localhost:3000/v1/brain/${hashedString}`);
+      setShareLink(`https://secondbrain-gpst.onrender.com/v1/brain/${hashedString}`);
     } catch (error) {
       console.error("Failed to generate share link:", error);
     } finally {

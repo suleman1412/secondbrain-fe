@@ -32,7 +32,7 @@ const Register = () => {
 
       setIsLoading(true)
       const response = await axios.post(
-        'http://localhost:3000/v1/user/register',
+        'https://secondbrain-gpst.onrender.com/v1/user/register',
         validatedData
       )
       if (response.status === 200) {

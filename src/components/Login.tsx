@@ -34,7 +34,7 @@ const Login = () => {
 
       setIsLoading(true)
       const response = await axios.post(
-        'http://localhost:3000/v1/user/login',
+        'https://secondbrain-gpst.onrender.com/v1/user/login',
         validatedData
       )
       if (response.status === 200) {

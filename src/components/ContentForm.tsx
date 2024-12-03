@@ -4,6 +4,7 @@ import Button from "./ui/Button";
 import Heading from "./ui/Heading";
 import { ContentType } from "./Card";
 
+
 interface ContentFormProps {
   onClose: () => void;
   onSubmit: (content: ContentType) => void;
@@ -42,7 +43,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/v1/content",
+        `https://secondbrain-gpst.onrender.com/v1/content`,
         { link, type, title, tags },
         { headers: { Authorization: `Bearer ${token}` } }
       );
