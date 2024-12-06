@@ -22,8 +22,7 @@ const Login = () => {
   const [showAlert, setShowAlert] = useState(false)
   const setCurrTab = useSetRecoilState(currTab);
   const setisLoggedIn = useSetRecoilState(isLoggedIn)
-
-
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -34,7 +33,7 @@ const Login = () => {
 
       setIsLoading(true)
       const response = await axios.post(
-        'https://secondbrain-gpst.onrender.com/v1/user/login',
+        `${BASE_URL}/user/login`,
         validatedData
       )
       if (response.status === 200) {

@@ -21,6 +21,7 @@ const Register = () => {
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
   const setCurrTab = useSetRecoilState(currTab);
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -32,7 +33,7 @@ const Register = () => {
 
       setIsLoading(true)
       const response = await axios.post(
-        'https://secondbrain-gpst.onrender.com/v1/user/register',
+        `${BASE_URL}/user/register`,
         validatedData
       )
       if (response.status === 200) {

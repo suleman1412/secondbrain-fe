@@ -18,6 +18,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const contentTypes = ["image", "video", "article", "audio"];
 
@@ -43,7 +44,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
 
     try {
       const response = await axios.post(
-        `https://secondbrain-gpst.onrender.com/v1/content`,
+        `${BASE_URL}/content`,
         { link, type, title, tags },
         { headers: { Authorization: `Bearer ${token}` } }
       );
