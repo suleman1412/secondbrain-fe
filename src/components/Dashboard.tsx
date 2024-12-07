@@ -52,7 +52,8 @@
     }, [userLogin, token, contentStore.length]);
 
     const handleContentSubmit = (newContent: ContentType) => {
-      setContentStore((prevContent) => [...prevContent, newContent]); 
+      setContentStore((prevContent) => [...prevContent, newContent]);
+      setDisplayedContent((prevContent) => [...prevContent, newContent]) 
       setModalStatus(false);
     };
 

@@ -1,5 +1,9 @@
-import { AudioLines, File, Image, SquarePlay } from "lucide-react";
+import { AudioLines, Trash, File, Image, SquarePlay } from "lucide-react";
 import React from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
+import axios from "axios";
+
 
 interface Tags{
     _id: string;
@@ -29,9 +33,35 @@ const Card: React.FC<ContentType> = ({
     tags,
     link,
     createdAt,
+    _id = ''
 }) => {
+    const BASE_URL = import.meta.env.VITE_BASE_URL
+    const token = localStorage.getItem('token') || ''
+    const [contentstore, setContentStore] = useRecoilState(allContentAtom)
+    const setDisplayedContent = useSetRecoilState(filteredContentAtom)
+    const deleteContent = async(_id: string) => {
+        try {
+            await axios.delete(`
+                ${BASE_URL}/content/`,{
+                    data: {contentId: _id},
+                    headers: {Authorization: `Bearer ${token}`}
+                } 
+            );
+            const filteredContent = contentstore.filter(content => content._id !== _id)
+            setContentStore(filteredContent)
+            setDisplayedContent(filteredContent)
+        } catch (error) {
+            console.error("Failed to delete content", error);
+        }
+    }
     return (
-        <div className="bg-cardColor-1  border-2 border-border rounded-lg px-4 py-2 shadow-md">
+        <div className="bg-cardColor-1  border-2 border-border rounded-lg px-4 py-2 shadow-md relative">
+            <button
+            onClick={() => deleteContent(_id)}
+            className="absolute top-3 right-4"
+            >
+                <Trash className="w-5 h-5" />
+            </button>
             <div className="flex gap-2 items-center ">
                 {TypeStyles[type]}
                 <h3 className="text-lg font-semibold">{title}</h3>

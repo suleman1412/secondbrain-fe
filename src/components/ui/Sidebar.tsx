@@ -64,23 +64,33 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                         <div className="categories flex-1 mt-8 flex flex-col gap-4 px-2">
                             <Label onClick={() => handleFilter('image')}>
                                 <Image />
-                                Image
+                                <Heading variant="primary" size="xs">
+                                    Image
+                                </Heading>
                             </Label>
                             <Label onClick={() => handleFilter('video')}>
                                 <SquarePlay />
-                                Video
+                                <Heading variant="primary" size="xs">
+                                    Video
+                                </Heading>
                             </Label>
                             <Label onClick={() => handleFilter('article')}>
                                 <File />
-                                Article
+                                <Heading variant="primary" size="xs">
+                                    Article
+                                </Heading>
                             </Label>
                             <Label onClick={() => handleFilter('audio')}>
                                 <AudioLines />
-                                Audio
+                                <Heading variant="primary" size="xs">
+                                    Audio
+                                </Heading>
                             </Label>
                             <Label onClick={() => handleFilter('all')}>
                                 <Grid2X2 />
-                                All
+                                <Heading variant="primary" size="xs">
+                                    All
+                                </Heading>
                             </Label>
                         </div>
                         <div>
