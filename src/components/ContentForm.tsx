@@ -59,12 +59,13 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-8 rounded-lg shadow-xl relative w-[500px] text-black font-font1">
-        <button
+        <Button
+          variant="primary"
           onClick={onClose}
-          className="absolute top-3 right-4 text-gray-600 hover:text-gray-900"
+          className="absolute top-3 right-4"
         >
           ✕
-        </button>
+        </Button>
         <Heading variant="primary" size="md" className="mb-6">
           <span className="text-black">
             Add New Content
