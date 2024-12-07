@@ -7,16 +7,23 @@ import { ContentType } from "./Card";
 
 interface ContentFormProps {
   onClose: () => void;
-  onSubmit: (content: ContentType) => void;
+  onSubmit?: (content: ContentType) => void;
+  mainTitle?: string
+  initialData?: ContentType; 
 }
 
-const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
+const ContentForm: React.FC<ContentFormProps> = ({ 
+  onClose, 
+  onSubmit,
+  mainTitle = 'Add New Content',
+  initialData
+ }) => {
   const token = localStorage.getItem("token") || "";
 
-  const [link, setLink] = useState("");
-  const [type, setType] = useState("");
-  const [title, setTitle] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [link, setLink] = useState(initialData?.link || '');
+  const [type, setType] = useState(initialData?.type ||"");
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [tags, setTags] = useState(initialData?.tags?.map(tag => tag.title) || []);
   const [newTag, setNewTag] = useState("");
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -43,12 +50,30 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
     if (!title) return alert("Please enter a title.");
 
     try {
-      const response = await axios.post(  //POST new content to the server
-        `${BASE_URL}/content`,
-        { link, type, title, tags },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      onSubmit(response.data);
+      const payload = { link, type, title, tags };
+      if (initialData?._id) {
+        // Update content
+        console.log("Update Content")
+        const response = await axios.put(
+          `${BASE_URL}/content/`,
+          {
+            ...payload,
+            contentId: initialData._id
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        onSubmit?.(response.data);
+      } else {
+        // Create new content
+        console.log("Create Content")
+
+        const response = await axios.post(
+          `${BASE_URL}/content`,
+          payload,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        onSubmit?.(response.data);
+      }
       onClose();
     } catch (error) {
       console.error("Failed to submit content:", error);
@@ -68,7 +93,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
         </Button>
         <Heading variant="primary" size="md" className="mb-6">
           <span className="text-black">
-            Add New Content
+            {mainTitle}
           </span>
         </Heading>
         <form onSubmit={handleSubmit} className="space-y-4">

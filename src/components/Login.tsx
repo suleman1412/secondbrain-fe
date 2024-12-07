@@ -8,6 +8,7 @@ import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
 import { currTab, isLoggedIn } from './recoil/atoms'
 import FormContainer from './ui/FormContainer'
+import { useNavigate } from 'react-router-dom'
 
 interface FormErrors {
   username?: string
@@ -15,6 +16,7 @@ interface FormErrors {
 }
 
 const Login = () => {
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +43,8 @@ const Login = () => {
         setShowAlert(true)
         setisLoggedIn(true)
         setTimeout(() => {
-          setCurrTab('dashboard')
+          // setCurrTab('dashboard')
+          navigate('/dashboard')
           setShowAlert(false)
         }, 3000)
       }

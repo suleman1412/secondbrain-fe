@@ -1,8 +1,10 @@
-import { AudioLines, Trash, File, Image, SquarePlay } from "lucide-react";
-import React from "react";
+import { AudioLines, Trash, File, Image, SquarePlay, FilePenLine  } from "lucide-react";
+import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
 import axios from "axios";
+import ContentForm from "./ContentForm";
+import { useFetchContent } from "./hooks/useFetchContent";
 
 
 interface Tags{
@@ -39,6 +41,9 @@ const Card: React.FC<ContentType> = ({
     const token = localStorage.getItem('token') || ''
     const [contentstore, setContentStore] = useRecoilState(allContentAtom)
     const setDisplayedContent = useSetRecoilState(filteredContentAtom)
+    const fetchContent = useFetchContent();
+
+    const [updateModal, setUpdateModal] = useState(false)
     const deleteContent = async(_id: string) => {
         try {
             await axios.delete(`
@@ -56,15 +61,20 @@ const Card: React.FC<ContentType> = ({
     }
     return (
         <div className="bg-cardColor-1  border-2 border-border rounded-lg px-4 py-2 shadow-md relative">
-            <button
-            onClick={() => deleteContent(_id)}
-            className="absolute top-3 right-4"
-            >
-                <Trash className="w-5 h-5" />
-            </button>
-            <div className="flex gap-2 items-center ">
-                {TypeStyles[type]}
-                <h3 className="text-lg font-semibold">{title}</h3>
+            <div className="flex justify-between">
+                <div className="flex gap-2 items-center ">
+                    {TypeStyles[type]}
+                    <h3 className="text-lg font-semibold">{title}</h3>
+                </div>
+                <div className="flex gap-2">
+                    <button onClick={() => setUpdateModal(true)}>
+                        <FilePenLine size={20} />
+                    </button>
+                    <button onClick={() => deleteContent(_id)}>
+                        <Trash size={20} />
+                    </button>
+                    
+                </div>
             </div>
             <div className="mb-2">
                 <ul className="flex flex-wrap gap-2 mt-1">
@@ -99,6 +109,23 @@ const Card: React.FC<ContentType> = ({
                     </span> {new Date(createdAt).toLocaleDateString()}
                 </p>
             )}
+
+            {updateModal && 
+            <ContentForm 
+                onClose={() => setUpdateModal(false)} 
+                mainTitle="Update Content" 
+                initialData={{ title, type, tags, link, _id }}
+                onSubmit={
+                    async(updatedContent) => {
+                    const updatedContentStore = contentstore.map(content =>
+                    content._id === updatedContent._id ? updatedContent : content
+                    );
+                    setContentStore(updatedContentStore);
+                    setDisplayedContent(updatedContentStore);
+                    fetchContent()
+                }}
+            />
+            }
         </div>
     );
 };

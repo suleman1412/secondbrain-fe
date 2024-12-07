@@ -41,8 +41,7 @@ const Register = () => {
         setTimeout(() => {
           setCurrTab('login')
           setShowAlert(false)
-          
-        }, 3000)
+        }, 1000)
       }
 
       setUsername('')
