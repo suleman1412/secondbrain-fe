@@ -1,5 +1,5 @@
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isLoggedIn, shareLink } from "./recoil/atoms";
+import {  useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { isLoggedIn, shareLink,  allContentAtom, filteredContentAtom } from "./recoil/atoms";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Sidebar from "./ui/Sidebar";
@@ -9,62 +9,46 @@ import Button from "./ui/Button";
 import { PlusIcon, Share2Icon } from "lucide-react";
 import ContentForm from "./ContentForm";
 import ShareModal from "./ShareModal";
+import { useFetchContent } from "./hooks/useFetchContent";
 
 const Dashboard = () => {
+  const token = localStorage.getItem("token") || "";
   const userLogin = useRecoilValue(isLoggedIn);
   const setShareLink = useSetRecoilState(shareLink)
-  const [content, setContent] = useState<ContentType[]>([]);
-  const token = localStorage.getItem("token") || "";
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const [contentStore, setContentStore] = useRecoilState(allContentAtom)
+  const [displayedContent, setDisplayedContent] = useRecoilState(filteredContentAtom)
+  const fetchContent = useFetchContent();
+
   const [sideOpen, setSideOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-
-
+  const [isLoading, setIsLoading] = useState(false);
   const [modalStatus, setModalStatus] = useState(false);
   const [shareModal, setShareModal] = useState(false)
-  const fetchData = async () => {
-    if (!userLogin || !token) {
-      console.log("User is not logged in or token is missing");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await axios.get("https://secondbrain-gpst.onrender.com/v1/content/", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setContent(response.data.allContent || []);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
 
   useEffect(() => {
-    fetchData();
-  }, [userLogin, token]);
+    if (userLogin && token) {
+      fetchContent();
+    }
+  }, [userLogin, token, contentStore.length]);
 
-
-
-  const handleContentSubmit = async (newContent: ContentType) => {
-    setContent((prevContent) => [...prevContent, newContent]);
+  const handleContentSubmit = (newContent: ContentType) => {
+    setContentStore((prevContent) => [...prevContent, newContent]);
+    setDisplayedContent((prevContent) => [...prevContent, newContent]) 
     setModalStatus(false);
-    await fetchData()
-};
-
-  const toggleSidebar = () => setSideOpen((prev) => !prev);
+  };
 
   const handleShareLink = async () => {
     setIsLoading(true);
     setShareModal(true)
     try {
       const response = await axios.post(
-        "https://secondbrain-gpst.onrender.com/v1/brain/share",
+        `${BASE_URL}/brain/share`,
         { share: true },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const hashedString = response.data.link;
-      setShareLink(`https://secondbrain-gpst.onrender.com/v1/brain/${hashedString}`);
+      setShareLink(`${BASE_URL}/brain/${hashedString}`);
     } catch (error) {
       console.error("Failed to generate share link:", error);
     } finally {
@@ -74,7 +58,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex">
-      <Sidebar isOpen={sideOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar isOpen={sideOpen} toggleSidebar={() => setSideOpen((prev) => !prev)} />
       <div className="content px-6 py-5 flex-1">
         <div className="flex justify-between items-center">
           <Heading variant="primary" size="md">What I'm Learning</Heading>
@@ -102,8 +86,8 @@ const Dashboard = () => {
         >
           {isLoading ? (
             <p>Loading...</p>
-          ) : content.length > 0 ? (
-            content.map((item) => (
+          ) : displayedContent.length > 0 ? (
+              displayedContent.map((item) => (
               <Card key={item._id} {...item} />
             ))
           ) : (
