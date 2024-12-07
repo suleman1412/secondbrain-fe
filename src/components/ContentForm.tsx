@@ -73,10 +73,11 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
         </Heading>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block mb-2 font-bold">URL</label>
+            <label className="block mb-2 font-bold" htmlFor="url">URL</label>
             <input
               type="text"
               value={link}
+              id="url"
               onChange={(e) => setLink(e.target.value)}
               placeholder="Enter content URL"
               className="w-full p-2 border rounded"
@@ -84,9 +85,10 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
             />
           </div>
           <div>
-            <label className="block mb-2 font-bold">Content Type</label>
+            <label className="block mb-2 font-bold" htmlFor="type">Content Type</label>
             <select
               value={type}
+              id="type"
               onChange={(e) => setType(e.target.value)}
               className="w-full p-2 border rounded"
               required
@@ -100,10 +102,11 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
             </select>
           </div>
           <div>
-            <label className="block mb-2 font-bold">Title</label>
+            <label className="block mb-2 font-bold" htmlFor="title">Title</label>
             <input
               type="text"
               value={title}
+              id="title"
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter content title"
               className="w-full p-2 border rounded"
@@ -111,11 +114,12 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
             />
           </div>
           <div>
-            <label className="block mb-2 font-bold">Tags</label>
+            <label className="block mb-2 font-bold" htmlFor="tags">Tags</label>
             <div className="flex">
               <input
                 type="text"
                 value={newTag}
+                id="tags"
                 onChange={(e) => setNewTag(e.target.value)}
                 placeholder="Add a tag"
                 className="flex-grow p-2 border rounded-l"
