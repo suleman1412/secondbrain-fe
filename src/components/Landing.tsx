@@ -8,7 +8,6 @@ import Register from './Register';
 
 const Landing = () => {
     const currentTab = useRecoilValue(currTab);
-    console.log("Current Tab:", currentTab); 
     const renderContent = () => {
         switch (currentTab) {
             case 'login':

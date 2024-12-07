@@ -53,7 +53,6 @@ const ContentForm: React.FC<ContentFormProps> = ({
       const payload = { link, type, title, tags };
       if (initialData?._id) {
         // Update content
-        console.log("Update Content")
         const response = await axios.put(
           `${BASE_URL}/content/`,
           {
@@ -65,7 +64,6 @@ const ContentForm: React.FC<ContentFormProps> = ({
         onSubmit?.(response.data);
       } else {
         // Create new content
-        console.log("Create Content")
 
         const response = await axios.post(
           `${BASE_URL}/content`,

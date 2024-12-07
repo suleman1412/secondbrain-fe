@@ -21,7 +21,6 @@ export const useFetchContent = () => {
       const fetchedContent = response.data.allContent || [];
       setContentStore(fetchedContent);
       setDisplayedContent(fetchedContent);
-      console.log('in useFetchContetn after setting the content')
     } catch (error) {
       console.error("Failed to fetch content:", error);
     }
