@@ -43,7 +43,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
     if (!title) return alert("Please enter a title.");
 
     try {
-      const response = await axios.post(
+      const response = await axios.post(  //POST new content to the server
         `${BASE_URL}/content`,
         { link, type, title, tags },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -66,9 +66,9 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
           ✕
         </button>
         <Heading variant="primary" size="md" className="mb-6">
-            <span className="text-black">
-                Add New Content
-            </span>
+          <span className="text-black">
+            Add New Content
+          </span>
         </Heading>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -119,7 +119,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ onClose, onSubmit }) => {
                 placeholder="Add a tag"
                 className="flex-grow p-2 border rounded-l"
               />
-<Button 
+              <Button
                 type="button"
                 variant="secondary"
                 onClick={handleAddTag}

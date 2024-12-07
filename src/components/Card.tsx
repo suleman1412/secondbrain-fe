@@ -1,4 +1,4 @@
-import { AudioLines, File, Film, Image } from "lucide-react";
+import { AudioLines, File, Image, SquarePlay } from "lucide-react";
 import React from "react";
 
 interface Tags{
@@ -9,7 +9,7 @@ interface Tags{
 const TypeStyles: { [key: string]: JSX.Element } = {
     'image': <Image />,
     'article': <File />,
-    'video': <Film />,
+    'video': <SquarePlay />,
     'audio': <AudioLines />,
 };
 
