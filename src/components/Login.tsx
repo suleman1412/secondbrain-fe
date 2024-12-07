@@ -48,7 +48,6 @@ const Login = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
-        console.log(error)
         if (error instanceof ZodError) {
           const formErrors: FormErrors = {}
           error.errors.forEach((err) => {
