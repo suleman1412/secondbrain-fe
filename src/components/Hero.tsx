@@ -26,7 +26,7 @@ const Hero = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>> }) 
    const handleGetStarted = () => {
        setHeroTitle(tempTitle);
        setHeroLink(tempLink);
-       setCurrent('login')
+       setCurrent('register')
    }
    return (
        <div className='my-12 mx-auto w-full md:w-[70%] flex flex-col text-center items-center gap-12 overflow-x-hidden'>
