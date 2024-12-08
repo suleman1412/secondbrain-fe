@@ -27,6 +27,7 @@ export interface ContentType {
     createdAt?: string;
     _id?: string;
     updatedAt?: string;
+    sideOpen?: boolean
 }
 
 const Card: React.FC<ContentType> = ({
@@ -35,7 +36,8 @@ const Card: React.FC<ContentType> = ({
     tags,
     link,
     createdAt,
-    _id = ''
+    _id = '',
+    sideOpen
 }) => {
     const BASE_URL = import.meta.env.VITE_BASE_URL
     const token = localStorage.getItem('token') || ''
@@ -67,10 +69,10 @@ const Card: React.FC<ContentType> = ({
                     <h3 className="text-lg font-semibold">{title}</h3>
                 </div>
                 <div className="flex gap-2">
-                    <button onClick={() => setUpdateModal(true)}>
+                    <button onClick={() => setUpdateModal(true)} disabled={sideOpen}>
                         <FilePenLine size={20} />
                     </button>
-                    <button onClick={() => deleteContent(_id)}>
+                    <button onClick={() => deleteContent(_id)} disabled={sideOpen}>
                         <Trash size={20} />
                     </button>
                     
@@ -93,10 +95,10 @@ const Card: React.FC<ContentType> = ({
             
             {link && (
                 <a
-                    href={link}
+                    href={sideOpen ? undefined : link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-gray-500 underline text-sm mb-2 inline-block"
+                    className={`${sideOpen ? '' : 'hover:text-gray-500'} underline text-sm mb-2 inline-block`}
                 >
                     View Content
                 </a>
