@@ -81,7 +81,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-8 rounded-lg shadow-xl relative w-[500px] text-black font-font1">
+      <div className="bg-white p-5 rounded-lg shadow-xl relative w-[250px] md:w-[350px] text-black font-font1 text-[0.75rem] lg:text-[1rem]">
         <Button
           variant="primary"
           onClick={onClose}
@@ -89,7 +89,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
         >
           ✕
         </Button>
-        <Heading variant="primary" size="md" className="mb-6">
+        <Heading variant="primary" size='sm' className="mb-6">
           <span className="text-black">
             {mainTitle}
           </span>

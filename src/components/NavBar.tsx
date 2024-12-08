@@ -21,7 +21,7 @@ export const NavBar = () => {
                 </h1>
             </div>
 
-            <div className="flex gap-4 text-[0.6rem] md:text-[0.8rem] font-medium">
+            <div className="flex gap-4 text-[0.75rem] md:text-[1rem] font-medium">
                 <Button 
                     variant="secondary" 
                     onClick={() => {

@@ -27,10 +27,10 @@ const Register = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrors({})
-
+  
     try {
       const validatedData = AuthSchema.parse({ username, password })
-
+  
       setIsLoading(true)
       const response = await axios.post(
         `${BASE_URL}/user/register`,
@@ -43,7 +43,7 @@ const Register = () => {
           setShowAlert(false)
         }, 1000)
       }
-
+  
       setUsername('')
       setPassword('')
     } catch (error) {
@@ -55,8 +55,35 @@ const Register = () => {
           }
         })
         setErrors(formErrors)
+      } else if (axios.isAxiosError(error)) {
+        if (error.response) {
+          const errorMessage = error.response.data.message || 'An error occurred';
+          switch (error.response.status) {
+            case 403:
+              setErrors({ username: errorMessage });
+              break;
+            case 411:
+              setErrors({ 
+                username: errorMessage.includes('username') ? errorMessage : undefined,
+                password: errorMessage.includes('password') ? errorMessage : undefined
+              });
+              break;
+            case 500:
+              setErrors({ password: 'Server error. Please try again later.' });
+              break;
+            default:
+              setErrors({ password: errorMessage });
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          setErrors({ password: 'No response from server. Please check your connection.' });
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          setErrors({ password: 'Error setting up the request. Please try again.' });
+        }
       } else {
-        setErrors({ password: 'Registration failed. Please try again.' })
+        // Handle other types of errors
+        setErrors({ password: 'Registration failed. Please try again.' });
       }
     } finally {
       setIsLoading(false)

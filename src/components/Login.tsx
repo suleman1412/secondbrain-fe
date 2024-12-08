@@ -48,18 +48,48 @@ const Login = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
-        if (error instanceof ZodError) {
-          const formErrors: FormErrors = {}
-          error.errors.forEach((err) => {
-            if (err.path[0]) {
-              formErrors[err.path[0] as keyof FormErrors] = err.message
-            }
-          })
-          setErrors(formErrors)
-        }else{
-          setErrors({ password: 'Something went wrong. Please try again later' })
+      if (error instanceof ZodError) {
+        const formErrors: FormErrors = {}
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            formErrors[err.path[0] as keyof FormErrors] = err.message
+          }
+        })
+        setErrors(formErrors)
+      } else if (axios.isAxiosError(error)) {
+        if (error.response) {
+          const errorMessage = error.response.data.message || 'An error occurred';
+          switch (error.response.status) {
+            case 403:
+              setErrors({ password: errorMessage });
+              break;
+            case 411:
+              setErrors({ 
+                username: errorMessage.includes('username') ? errorMessage : undefined,
+                password: errorMessage.includes('password') ? errorMessage : undefined
+              });
+              break;
+            case 404:
+              setErrors({ username: errorMessage });
+              break;
+            case 401:
+              setErrors({ password: errorMessage });
+              break;
+            case 500:
+              setErrors({ password: 'Server error. Please try again later.' });
+              break;
+            default:
+              setErrors({ password: errorMessage });
+          }
+        } else if (error.request) {
+          setErrors({ password: 'No response from server. Please check your connection.' });
+        } else {
+          setErrors({ password: 'Error setting up the request. Please try again.' });
         }
-    }  finally {
+      } else {
+        setErrors({ password: 'An unexpected error occurred. Please try again.' });
+      }
+    } finally {
       setIsLoading(false)
     }
   }
