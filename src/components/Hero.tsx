@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import Button from './ui/Button'
 import Input from './ui/Input' 
 import Heading from './ui/Heading';
 import { useSetRecoilState } from 'recoil';
 import { heroTitleinput, heroLinkinput } from './recoil/atoms';
 
-const Hero = () => {
+const Hero = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>> }) => {
    const setHeroTitle = useSetRecoilState(heroTitleinput);
    const setHeroLink = useSetRecoilState(heroLinkinput);
 
@@ -26,6 +26,7 @@ const Hero = () => {
    const handleGetStarted = () => {
        setHeroTitle(tempTitle);
        setHeroLink(tempLink);
+       setCurrent('login')
    }
    return (
        <div className='my-12 mx-auto w-full md:w-[70%] flex flex-col text-center items-center gap-12 overflow-x-hidden'>

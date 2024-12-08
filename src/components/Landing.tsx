@@ -14,7 +14,7 @@ const Landing = () => {
             case 'register':
                 return <Register setCurrent={setCurrent}/>;
             default:
-                return <Hero />;
+                return <Hero setCurrent={setCurrent}/>;
         }
     };
 
