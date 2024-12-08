@@ -6,7 +6,6 @@ import Sidebar from './ui/Sidebar'
 import Heading from './ui/Heading'
 import { useMediaQuery } from './hooks/useMediaQuery'
 import ContentBlur from './ui/ContentBlur'
-import Footer from './Footer'
 
 function SharedContent() {
     const { sharelink } = useParams()
