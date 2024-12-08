@@ -7,7 +7,7 @@ interface HeadingProps {
 }
 
 const sizeStyles = {
-    "xs": "text-[0.7rem] md:text-[0.8rem] lg:text-[1rem]",
+    "xs": "text-[0.8rem] md:text-[0.9rem] lg:text-[1.1rem]",
     "jsm": "text-[1.1rem] md:text-[1.3rem] lg:text-[1.5rem]",
     "sm": "text-[1.2rem] md:text-[1.5rem] lg:text-[2rem]",
     "md": "text-[2rem] md:text-[2.3rem] lg:text-[2.5rem]",

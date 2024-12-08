@@ -13,10 +13,10 @@ interface Tags{
 }
 
 const TypeStyles: { [key: string]: JSX.Element } = {
-    'image': <Image />,
-    'article': <File />,
-    'video': <SquarePlay />,
-    'audio': <AudioLines />,
+    'image': <Image className="w-6 h-6 md:w-8 md:h-8"/>,
+    'article': <File className="w-6 h-6 md:w-8 md:h-8"/>,
+    'video': <SquarePlay className="w-6 h-6 md:w-8 md:h-8"/>,
+    'audio': <AudioLines className="w-6 h-6 md:w-8 md:h-8"/>,
 };
 
 export interface ContentType {
@@ -27,17 +27,21 @@ export interface ContentType {
     createdAt?: string;
     _id?: string;
     updatedAt?: string;
-    sideOpen?: boolean
 }
 
-const Card: React.FC<ContentType> = ({
+export interface CardType extends ContentType {
+    sideOpen?: boolean
+    variant?: boolean
+}
+const Card: React.FC<CardType> = ({
     title,
     type,
     tags,
     link,
     createdAt,
     _id = '',
-    sideOpen
+    sideOpen,
+    variant=false
 }) => {
     const BASE_URL = import.meta.env.VITE_BASE_URL
     const token = localStorage.getItem('token') || ''
@@ -64,19 +68,21 @@ const Card: React.FC<ContentType> = ({
     return (
         <div className="bg-cardColor-1  border-2 border-border rounded-lg px-4 py-2 shadow-md relative">
             <div className="flex justify-between">
-                <div className="flex gap-2 items-center ">
+                <div className="flex gap-2 items-center">
                     {TypeStyles[type]}
-                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <span className=" font-font1 text-[1rem] md:text[1.1rem] lg:text-[1.2rem] font-semibold tracking-normal break-words w-full line-clamp-2">{title}</span>
                 </div>
-                <div className="flex gap-2">
-                    <button onClick={() => setUpdateModal(true)} disabled={sideOpen}>
-                        <FilePenLine size={20} />
-                    </button>
-                    <button onClick={() => deleteContent(_id)} disabled={sideOpen}>
-                        <Trash size={20} />
-                    </button>
-                    
-                </div>
+                {
+                    !variant && 
+                    <div className="flex gap-2">
+                        <button onClick={() => setUpdateModal(true)} disabled={sideOpen}>
+                            <FilePenLine className="w-5 h-5 md:w-6 md:h-6" />
+                        </button>
+                        <button onClick={() => deleteContent(_id)} disabled={sideOpen}>
+                            <Trash className="w-5 h-5 md:w-6 md:h-6" />
+                        </button>
+                    </div>
+                }
             </div>
             <div className="mb-2">
                 <ul className="flex flex-wrap gap-2 mt-1">
@@ -98,17 +104,21 @@ const Card: React.FC<ContentType> = ({
                     href={sideOpen ? undefined : link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${sideOpen ? '' : 'hover:text-gray-500'} underline text-sm mb-2 inline-block`}
+                    className={`${sideOpen ? '' : 'hover:text-primary-2 '} mb-2 inline-block font-medium font-font1 text-[0.7rem] md:text[0.75rem] lg:text-[0.85rem] tracking-normal
+                    text-cardColor-3`}
                 >
                     View Content
                 </a>
             )}
             
             {createdAt && (
-                <p className="text-xs text-gray-500 my-2">
-                    <span className="font-bold">
+                <p className="text-xs text-cardColor-3 my-2">
+                    <span className="font-font1 font-semibold text-[0.7rem] md:text[0.75rem] lg:text-[0.85rem] tracking-normal">
                         Created At:
-                    </span> {new Date(createdAt).toLocaleDateString()}
+                        <span className="ml-1 font-light tracking-wider ">
+                            {new Date(createdAt).toLocaleDateString()}
+                        </span>
+                    </span> 
                 </p>
             )}
 

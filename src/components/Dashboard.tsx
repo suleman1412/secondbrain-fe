@@ -83,7 +83,7 @@ const Dashboard = () => {
           <ContentForm onClose={() => setModalStatus(false)} onSubmit={handleContentSubmit} />
         )}
         {shareModal && (
-          <ShareModal onClick={() => setShareModal(false)}/>
+          <ShareModal onClick={() => setShareModal(false)} setShareModal={setShareModal}/>
         )}
       </div>
     </>

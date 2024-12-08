@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+
   theme: {
     extend: {
       fontFamily: {
@@ -21,7 +22,8 @@ export default {
         },
         cardColor: {
           1: '#333333',
-          2: '#262626'
+          2: '#262626',
+          3: '#4f4f4f'
         },
         border: "#404040",
         text: "#FFFFFF",
