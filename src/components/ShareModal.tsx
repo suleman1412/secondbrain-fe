@@ -2,19 +2,20 @@ import { useRecoilValue } from "recoil"
 import Button from "./ui/Button"
 import Heading from "./ui/Heading"
 import { shareLink } from "./recoil/atoms"
-
 interface ShareModalProps {
     onClick: () => void
+    setShareModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const ShareModal: React.FC<ShareModalProps> = ({
     onClick,
+    setShareModal
 }) => {
     
     const share = useRecoilValue(shareLink).toString()
     const handleCopy = () => {
         navigator.clipboard.writeText(share)
-        alert('Link Copied')
+        setShareModal(false)
     }
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
