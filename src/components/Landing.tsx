@@ -1,19 +1,18 @@
-import { useRecoilValue } from 'recoil';
-import { currTab } from './recoil/atoms'; 
 import Footer from './Footer';
 import Hero from './Hero';
 import { NavBar } from './NavBar';
 import Login from './Login';
 import Register from './Register';
+import { useState } from 'react';
 
 const Landing = () => {
-    const currentTab = useRecoilValue(currTab);
+    const [current, setCurrent ] = useState('')
     const renderContent = () => {
-        switch (currentTab) {
+        switch (current) {
             case 'login':
-                return <Login />;
+                return <Login/>;
             case 'register':
-                return <Register />;
+                return <Register setCurrent={setCurrent}/>;
             default:
                 return <Hero />;
         }
@@ -21,7 +20,7 @@ const Landing = () => {
 
     return (
         <div className="flex flex-col min-h-screen p-2 mx-auto max-w-7xl ">
-            <NavBar />
+            <NavBar setCurrent={setCurrent}/>
             <div className="flex flex-1 justify-center items-center">
                 {renderContent()}
             </div>

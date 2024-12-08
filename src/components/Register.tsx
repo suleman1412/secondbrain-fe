@@ -5,22 +5,20 @@ import { AuthSchema } from '../lib/schemas'
 import { ZodError } from 'zod'
 import axios from 'axios'
 import Alert from './ui/Alert'
-import { useSetRecoilState } from 'recoil'
-import { currTab } from './recoil/atoms'
 import FormContainer from './ui/FormContainer'
+import React, { Dispatch, SetStateAction } from 'react'
 
 interface FormErrors {
   username?: string
   password?: string
 }
 
-const Register = () => {
+const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>> }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
-  const setCurrTab = useSetRecoilState(currTab);
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 
@@ -39,7 +37,7 @@ const Register = () => {
       if (response.status === 200) {
         setShowAlert(true)
         setTimeout(() => {
-          setCurrTab('login')
+          setCurrent('login')
           setShowAlert(false)
         }, 1000)
       }

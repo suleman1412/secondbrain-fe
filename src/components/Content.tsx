@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil'
 import { filteredContentAtom } from './recoil/atoms'
 import { PlusIcon, Share2Icon } from 'lucide-react'
 import Card from './Card'
+import ContentBlur from './ui/ContentBlur'
 
 interface ContentProps {
   handleShareLink: () => Promise<void>;
@@ -18,16 +19,17 @@ const Content: React.FC<ContentProps> = ({
   handleShareLink, 
   setModalStatus,
   isLoading,
-  sideOpen
+  sideOpen,
   }) => {
     const isMobile = useMediaQuery()
     const displayedContent = useRecoilValue(filteredContentAtom)
     
     
     return (
-        <div className={`content px-6 py-5 flex-1 ml-6 md:ml-10 h-screen  ${sideOpen && 'pointer-events-none opacity-80 blur-[1px]'}`}>
+      <ContentBlur sideOpen={sideOpen}>
+        {/* Heading and Buttons */}
         <div className="flex justify-between items-center gap-2">
-          <Heading variant="primary" size={`${isMobile ? 'sm' : 'md'}`}>What I'm Learning</Heading>
+          <Heading variant="primary" size={`${isMobile ? 'jsm' : 'md'}`}>What I'm Learning</Heading>
           <div className="flex gap-2 md:gap-4">
             <Button
               variant="secondary"
@@ -49,9 +51,8 @@ const Content: React.FC<ContentProps> = ({
             </Button>
           </div>
         </div>
-        <div
-          className="cardsContainer grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4"
-        >
+        {/* Cards Container */}
+        <div className="cardsContainer grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
           {isLoading ? (
             <p>Loading...</p>
           ) : displayedContent.length > 0 ? (
@@ -61,8 +62,8 @@ const Content: React.FC<ContentProps> = ({
           ) : (
             <p>No content available</p>
           )}
-        </div>
       </div>
+      </ContentBlur>
     )
 }
 

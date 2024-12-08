@@ -3,12 +3,11 @@ import Button from './ui/Button'
 import Input from './ui/Input' 
 import Heading from './ui/Heading';
 import { useSetRecoilState } from 'recoil';
-import { heroTitleinput, heroLinkinput, currTab } from './recoil/atoms';
+import { heroTitleinput, heroLinkinput } from './recoil/atoms';
 
 const Hero = () => {
    const setHeroTitle = useSetRecoilState(heroTitleinput);
    const setHeroLink = useSetRecoilState(heroLinkinput);
-   const setCurrTab = useSetRecoilState(currTab)
 
    const [tempTitle, setTempTitle] = useState<string | null>(null);
    const [tempLink, setTempLink] = useState<string | null>(null);
@@ -27,7 +26,6 @@ const Hero = () => {
    const handleGetStarted = () => {
        setHeroTitle(tempTitle);
        setHeroLink(tempLink);
-       setCurrTab('login')
    }
    return (
        <div className='my-12 mx-auto w-full md:w-[70%] flex flex-col text-center items-center gap-12 overflow-x-hidden'>
