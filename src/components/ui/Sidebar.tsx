@@ -3,7 +3,6 @@ import Heading from "./Heading";
 import { Brain, PanelLeftClose, PanelLeftOpen, SquarePlay, File,Image, AudioLines, Grid2X2 } from "lucide-react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { allContentAtom, filteredContentAtom, isLoggedIn } from "../recoil/atoms";
-import { useMediaQuery } from "../hooks/useMediaQuery";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -14,7 +13,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     const setUserLogin = useSetRecoilState(isLoggedIn) 
     const setDisplayedContent = useSetRecoilState(filteredContentAtom)
     const contentStore = useRecoilValue(allContentAtom)
-    const isMobile = useMediaQuery()
     
     
     const handleLogout = () => {
