@@ -10,3 +10,7 @@ body{
 input::-ms-reveal {
     filter: invert(100%);
 }
+
+.tooltip {
+    @apply absolute w-24 p-1 bg-cardColor-2 text-white text-sm text-center rounded-md shadow-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-200 top-[-2.2rem] right-[-2rem] after:content-[''] after:absolute after:top-full after:left-1/2 after:-translate-x-1/2 after:border-[6px] after:border-solid after:border-cardColor-2 after:border-t-cardColor-2 after:border-x-transparent after:border-b-transparent
+}

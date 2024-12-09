@@ -116,6 +116,8 @@ const Login = () => {
       subtitle="Welcome back! "
       onSubmit={handleSubmit}
       isLoading={isLoading}
+      setUsername={setUsername}
+      setPassword={setPassword}
     >
       <div>
         <Input

@@ -109,6 +109,7 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
           subtitle="Join us today!"
           onSubmit={handleSubmit}
           isLoading={isLoading}
+          variant={false}
         >
           <div>
             <Input
