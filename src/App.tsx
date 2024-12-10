@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route 
             path="/" 
-            element={ UserLogin && token ? <Navigate to='/dashboard' /> : <Landing />} 
+            element={ UserLogin || token ? <Navigate to='/dashboard' /> : <Landing />} 
           />
           
           <Route 

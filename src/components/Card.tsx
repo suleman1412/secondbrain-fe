@@ -1,16 +1,10 @@
 import { AudioLines, Trash, File, Image, SquarePlay, FilePenLine  } from "lucide-react";
 import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
 import axios from "axios";
 import ContentForm from "./ContentForm";
-import { useFetchContent } from "./hooks/useFetchContent";
-
-
-interface Tags{
-    _id: string;
-    title: string;
-}
+import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
+import { Tags } from "../lib/contentId";
 
 const TypeStyles: { [key: string]: JSX.Element } = {
     'image': <Image className="w-6 h-6 md:w-8 md:h-8"/>,
@@ -24,14 +18,15 @@ export interface ContentType {
     type: string;
     tags: Tags[];
     link: string;
-    createdAt?: string;
-    _id?: string;
-    updatedAt?: string;
+    createdAt: string;
+    contentId: string;
 }
+
 
 export interface CardType extends ContentType {
     sideOpen?: boolean
-    variant?: boolean
+    variant?: boolean,
+    updateModal?: boolean,
 }
 const Card: React.FC<CardType> = ({
     title,
@@ -39,26 +34,27 @@ const Card: React.FC<CardType> = ({
     tags,
     link,
     createdAt,
-    _id = '',
+    contentId = '',
     sideOpen,
-    variant=false
+    variant=false,
 }) => {
     const BASE_URL = import.meta.env.VITE_BASE_URL
     const token = localStorage.getItem('token') || ''
     const [contentstore, setContentStore] = useRecoilState(allContentAtom)
     const setDisplayedContent = useSetRecoilState(filteredContentAtom)
-    const fetchContent = useFetchContent();
-
+    
     const [updateModal, setUpdateModal] = useState(false)
-    const deleteContent = async(_id: string) => {
+
+    const deleteContent = async(contentId: string) => {
         try {
             await axios.delete(`
                 ${BASE_URL}/content/`,{
-                    data: {contentId: _id},
+                    data: {contentId: contentId},
                     headers: {Authorization: `Bearer ${token}`}
                 } 
             );
-            const filteredContent = contentstore.filter(content => content._id !== _id)
+            const filteredContent = contentstore.filter(content => content.contentId !== contentId)
+            // Frontend updating to accomodate for deleting content.
             setContentStore(filteredContent)
             setDisplayedContent(filteredContent)
         } catch (error) {
@@ -75,10 +71,10 @@ const Card: React.FC<CardType> = ({
                 {
                     !variant && 
                     <div className="flex gap-2">
-                        <button onClick={() => setUpdateModal(true)} disabled={sideOpen}>
+                        <button onClick={() => setUpdateModal?.(true)} disabled={sideOpen}>
                             <FilePenLine className="w-5 h-5 md:w-6 md:h-6" />
                         </button>
-                        <button onClick={() => deleteContent(_id)} disabled={sideOpen}>
+                        <button onClick={() => deleteContent(contentId)} disabled={sideOpen}>
                             <Trash className="w-5 h-5 md:w-6 md:h-6" />
                         </button>
                     </div>
@@ -89,7 +85,7 @@ const Card: React.FC<CardType> = ({
                     {tags && tags.length > 0 && (
                         tags.map((tag) => (
                             <li
-                                key={tag._id}
+                                key={tag.tagId}
                                 className="bg-cardColor-2  text-xs px-2 py-1 rounded"
                             >
                                 # {tag.title}
@@ -112,7 +108,7 @@ const Card: React.FC<CardType> = ({
             )}
             
             {createdAt && (
-                <p className="text-xs text-cardColor-3 my-2">
+                <p className="text-xs text-cardColor-2 my-2">
                     <span className="font-font1 font-semibold text-[0.7rem] md:text[0.75rem] lg:text-[0.85rem] tracking-normal">
                         Created At:
                         <span className="ml-1 font-light tracking-wider ">
@@ -124,18 +120,10 @@ const Card: React.FC<CardType> = ({
 
             {updateModal && 
             <ContentForm 
-                onClose={() => setUpdateModal(false)} 
+                onClose={() => setUpdateModal?.(false)} 
                 mainTitle="Update Content" 
-                initialData={{ title, type, tags, link, _id }}
-                onSubmit={
-                    async(updatedContent) => {
-                    const updatedContentStore = contentstore.map(content =>
-                    content._id === updatedContent._id ? updatedContent : content
-                    );
-                    setContentStore(updatedContentStore);
-                    setDisplayedContent(updatedContentStore);
-                    fetchContent()
-                }}
+                initialData={{ title, type, tags, link, contentId, createdAt }}
+                updateModal={updateModal}
             />
             }
         </div>
