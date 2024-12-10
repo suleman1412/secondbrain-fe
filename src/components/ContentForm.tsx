@@ -3,23 +3,25 @@ import axios from "axios";
 import Button from "./ui/Button";
 import Heading from "./ui/Heading";
 import { ContentType } from "./Card";
+import enrichContent, { ContentPayload } from "../lib/contentId";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
 
 
 interface ContentFormProps {
   onClose: () => void;
-  onSubmit?: (content: ContentType) => void;
   mainTitle?: string
-  initialData?: ContentType; 
+  initialData?: ContentType
+  updateModal?:boolean
 }
 
 const ContentForm: React.FC<ContentFormProps> = ({ 
   onClose, 
-  onSubmit,
   mainTitle = 'Add New Content',
-  initialData
+  initialData,
+  updateModal
  }) => {
   const token = localStorage.getItem("token") || "";
-
   const [link, setLink] = useState(initialData?.link || '');
   const [type, setType] = useState(initialData?.type ||"");
   const [title, setTitle] = useState(initialData?.title || "");
@@ -27,10 +29,28 @@ const ContentForm: React.FC<ContentFormProps> = ({
   const [newTag, setNewTag] = useState("");
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+  const setDisplayedContent = useSetRecoilState(filteredContentAtom)
+  const [contentStore, setContentStore] = useRecoilState(allContentAtom)
   const contentTypes = ["image", "video", "article", "audio"];
 
   const isValidUrl = (url: string) =>
     /^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\/?.*$/.test(url);
+
+  const handleContentSubmit = (newContent: ContentType) => {
+    if(updateModal){
+      // Frontend updating to accomodate for the updated content.
+      console.log('in handleContentSubmit updateModal')
+      const updatedContent = contentStore.map(content => content.contentId === newContent.contentId ? newContent : content) 
+      setContentStore(updatedContent);
+      setDisplayedContent(updatedContent) 
+    } else{
+      // Frontend updating to accomodate for the new content.
+      setContentStore((prevContent) => [...prevContent, newContent]); // here the frontend and the backend are getting added in sync.
+      setDisplayedContent((prevContent) => [...prevContent, newContent]) 
+      console.log(contentStore)
+      onClose();
+    }
+  };
 
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim().toLowerCase())) {
@@ -50,38 +70,43 @@ const ContentForm: React.FC<ContentFormProps> = ({
     if (!title) return alert("Please enter a title.");
 
     try {
-      const payload = { link, type, title, tags };
-      if (initialData?._id) {
+      const payload : ContentPayload = { link, type, title, tags };
+
+      const enrichedContent = enrichContent(payload)
+      console.log("In content form, after enriching content: ", enrichedContent)
+      if (initialData?.contentId) {
         // Update content
         const response = await axios.put(
           `${BASE_URL}/content/`,
           {
-            ...payload,
-            contentId: initialData._id
+            ...enrichedContent,
+            contentId: initialData.contentId
           },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        onSubmit?.(response.data);
+        handleContentSubmit?.(response.data.updatedContent);
       } else {
         // Create new content
-
         const response = await axios.post(
           `${BASE_URL}/content`,
-          payload,
+          enrichedContent,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        onSubmit?.(response.data);
+        handleContentSubmit?.(response.data.content);
       }
-      onClose();
+
     } catch (error) {
       console.error("Failed to submit content:", error);
       alert("Submission failed.");
+    } finally{
+      onClose();
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-5 rounded-lg shadow-xl relative w-[250px] md:w-[350px] text-black font-font1 text-[0.75rem] lg:text-[1rem]">
+      <div className="bg-white p-5 rounded-lg shadow-xl relative w-[250px] md:w-[350px] text-black font-font1
+       text-[0.75rem] lg:text-[1rem]">
         <Button
           variant="primary"
           onClick={onClose}
