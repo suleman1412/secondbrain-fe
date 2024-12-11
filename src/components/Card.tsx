@@ -114,7 +114,7 @@ const Card: React.FC<CardType> = ({
                 <p className="text-xs text-cardColor-2 my-2">
                     <span className="font-font1 font-semibold text-[0.7rem] md:text[0.75rem] lg:text-[0.85rem] tracking-normal">
                         Created At:
-                        <span className="ml-1 font-light tracking-wider ">
+                        <span className="ml-1 font-medium tracking-wider ">
                             {new Date(createdAt).toLocaleDateString()}
                         </span>
                     </span> 

@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     <div className="p-4 border-t-4 border-cardColor-1">
                         <button
                             onClick={onLogout}
-                            className="w-full bg-red-500 text-white font-font1 font-semibold tracking-wider py-2 rounded-md hover:bg-red-700 transition-colors"
+                            className="w-full bg-logout-1 text-white font-font1 font-semibold tracking-wider py-2 rounded-md hover:bg-logout-2 transition-colors"
                         >
                             Logout
                         </button>
