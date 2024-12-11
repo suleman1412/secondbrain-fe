@@ -36,22 +36,6 @@ const ContentForm: React.FC<ContentFormProps> = ({
   const isValidUrl = (url: string) =>
     /^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\/?.*$/.test(url);
 
-  const handleContentSubmit = (newContent: ContentType) => {
-    if(updateModal){
-      // Frontend updating to accomodate for the updated content.
-      console.log('in handleContentSubmit updateModal')
-      const updatedContent = contentStore.map(content => content.contentId === newContent.contentId ? newContent : content) 
-      setContentStore(updatedContent);
-      setDisplayedContent(updatedContent) 
-    } else{
-      // Frontend updating to accomodate for the new content.
-      setContentStore((prevContent) => [...prevContent, newContent]); // here the frontend and the backend are getting added in sync.
-      setDisplayedContent((prevContent) => [...prevContent, newContent]) 
-      console.log(contentStore)
-      onClose();
-    }
-  };
-
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim().toLowerCase())) {
       setTags((prev) => [...prev, newTag.trim().toLowerCase()]);
@@ -68,39 +52,57 @@ const ContentForm: React.FC<ContentFormProps> = ({
     if (!link || !isValidUrl(link)) return alert("Invalid URL.");
     if (!type) return alert("Please select a content type.");
     if (!title) return alert("Please enter a title.");
+    const payload : ContentPayload = { 
+      link, 
+      type, 
+      title, 
+      tags,
+      contentId: initialData?.contentId
+    };
 
-    try {
-      const payload : ContentPayload = { link, type, title, tags };
-
-      const enrichedContent = enrichContent(payload)
-      console.log("In content form, after enriching content: ", enrichedContent)
-      if (initialData?.contentId) {
-        // Update content
-        const response = await axios.put(
-          `${BASE_URL}/content/`,
-          {
-            ...enrichedContent,
-            contentId: initialData.contentId
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        handleContentSubmit?.(response.data.updatedContent);
-      } else {
-        // Create new content
-        const response = await axios.post(
-          `${BASE_URL}/content`,
-          enrichedContent,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        handleContentSubmit?.(response.data.content);
-      }
-
-    } catch (error) {
-      console.error("Failed to submit content:", error);
-      alert("Submission failed.");
-    } finally{
+    const enrichedContent = enrichContent(payload)
+    
+    if (payload?.contentId && updateModal && initialData?.contentId) {
+      // Update content
+      const previousContentStore = [...contentStore];
+      const updatedContent = contentStore.map(content => content.contentId === enrichedContent.contentId ? enrichedContent : content)  
+      setContentStore(updatedContent);  // Update the FE first, then send out an request to BE. If it fails, rollback to befoer the update
+      setDisplayedContent(updatedContent)
       onClose();
-    }
+      try{
+          await axios.put(
+            `${BASE_URL}/content/`,
+            {
+              ...enrichedContent,
+              contentId: initialData.contentId
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+      } catch(error){
+          alert("Failed to update content.");
+          console.error('failed to PUT content', error)
+          setContentStore(previousContentStore);
+          setDisplayedContent(previousContentStore) 
+      }
+    } else {
+        // Create new content
+        setContentStore((prevContent) => [...prevContent, enrichedContent]); // here the frontend and the backend are getting added in sync.
+        setDisplayedContent((prevContent) => [...prevContent, enrichedContent])
+        onClose();
+        try{
+          await axios.post(
+            `${BASE_URL}/content`,
+            enrichedContent,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+        } catch (error){
+          alert("Submission failed.");
+          console.error('failed to POST content', error)
+          const filteredContent = contentStore.filter(content => content.contentId != enrichedContent.contentId )
+          setContentStore(filteredContent);
+          setDisplayedContent(filteredContent) 
+        }
+      }
   };
 
   return (

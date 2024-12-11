@@ -47,18 +47,21 @@ const Card: React.FC<CardType> = ({
 
     const deleteContent = async(contentId: string) => {
         try {
+            const filteredContent = contentstore.filter(content => content.contentId !== contentId)
+            // Frontend updating quicker than BE accomodate for the lag deleting content.
+            setContentStore(filteredContent)
+            setDisplayedContent(filteredContent)
             await axios.delete(`
                 ${BASE_URL}/content/`,{
                     data: {contentId: contentId},
                     headers: {Authorization: `Bearer ${token}`}
                 } 
             );
-            const filteredContent = contentstore.filter(content => content.contentId !== contentId)
-            // Frontend updating to accomodate for deleting content.
-            setContentStore(filteredContent)
-            setDisplayedContent(filteredContent)
         } catch (error) {
             console.error("Failed to delete content", error);
+            alert('Error deleting the content')
+            setContentStore(contentstore)
+            setDisplayedContent(contentstore)
         }
     }
     return (
