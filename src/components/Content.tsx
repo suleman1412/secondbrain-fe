@@ -66,7 +66,7 @@ const Content: React.FC<ContentProps> = ({
             <p>Loading...</p>
           ) : displayedContent.length > 0 ? (
               displayedContent.map((item) => (
-              <Card key={item.contentId} {...item} sideOpen={sideOpen}/> //Frontend updates automatically as displayedContent is a state variable.
+              <Card key={item.contentId} {...item} sideOpen={sideOpen}/> //Frontend updates automatically as displayedContent is a state variable
             ))
           ) : (
             <p>No content available</p>

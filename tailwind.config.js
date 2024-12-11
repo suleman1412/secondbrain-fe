@@ -26,6 +26,10 @@ export default {
           3: '#888888'
         },
         border: "#404040",
+        logout:{
+          1: 'rgb(239 68 68)',
+          2: "rgb(185 28 28)"
+        },
         text: "#FFFFFF",
         darkBackground: "#1B1818"
     },
