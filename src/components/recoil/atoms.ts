@@ -3,7 +3,7 @@ import { ContentType } from '../Card'
 
 export const isLoggedIn= atom<boolean>({
     key: 'isLoggedIn',
-    default: false
+    default: localStorage.getItem('token') ? true : false
 })
 
 export const heroTitleinput = atom<string | null>({
@@ -29,4 +29,9 @@ export const allContentAtom = atom<ContentType[]>({
 export const filteredContentAtom = atom<ContentType[]>({
     key: 'filteredContentAtom',
     default: []
+})
+
+export const userId = atom<string>({
+    key: 'userId',
+    default: ''
 })

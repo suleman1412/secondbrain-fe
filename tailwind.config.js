@@ -23,7 +23,7 @@ export default {
         cardColor: {
           1: '#333333',
           2: '#262626',
-          3: '#4f4f4f'
+          3: '#888888'
         },
         border: "#404040",
         text: "#FFFFFF",
