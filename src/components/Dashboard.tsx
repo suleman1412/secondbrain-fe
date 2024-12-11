@@ -1,21 +1,18 @@
-import {  useRecoilState, useSetRecoilState } from "recoil";
-import { isLoggedIn, shareLink,  allContentAtom, filteredContentAtom } from "./recoil/atoms";
+import {  useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Sidebar from "./ui/Sidebar";
-import { ContentType } from "./Card";
-import ContentForm from "./ContentForm";
-import ShareModal from "./ShareModal";
 import { useFetchContent } from "./hooks/useFetchContent";
 import Content from "./Content";
+import { allContentAtom, filteredContentAtom, isLoggedIn, shareLink } from "./recoil/atoms";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token") || "";
   const [userLogin, setUserLogin] = useRecoilState(isLoggedIn);
   const setShareLink = useSetRecoilState(shareLink)
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const [contentStore, setContentStore] = useRecoilState(allContentAtom)
   const setDisplayedContent = useSetRecoilState(filteredContentAtom)
+  const contentstore = useRecoilValue(allContentAtom)
   const fetchContent = useFetchContent();
 
   const [sideOpen, setSideOpen] = useState(false);
@@ -23,21 +20,11 @@ const Dashboard = () => {
   const [modalStatus, setModalStatus] = useState(false);
   const [shareModal, setShareModal] = useState(false)
   
-
   useEffect(() => {
-    if (userLogin && token) {
-      console.log('fetching')
-      console.log(userLogin)
-      console.log(token)
-      fetchContent();
-    }
-  }, [userLogin, token, contentStore.length]);
-
-  const handleContentSubmit = (newContent: ContentType) => {
-    setContentStore((prevContent) => [...prevContent, newContent]);
-    setDisplayedContent((prevContent) => [...prevContent, newContent]) 
-    setModalStatus(false);
-  };
+    if(userLogin && token){
+        fetchContent()
+    } 
+  }, [userLogin]);
 
   const onLogout = () => {
     setUserLogin(false)
@@ -67,7 +54,7 @@ const Dashboard = () => {
       <Sidebar 
         isOpen={sideOpen} 
         toggleSidebar={() => setSideOpen((prev) => !prev)} 
-        contentStore={contentStore}
+        contentStore={contentstore}
         setDisplayedContent={setDisplayedContent}
         showLogout={true}
         onLogout={onLogout}
@@ -75,16 +62,13 @@ const Dashboard = () => {
       <div className="flex flex-col min-h-screen mx-auto max-w-7xl">
         <Content 
           handleShareLink={handleShareLink} 
+          modalStatus={modalStatus}
           setModalStatus={setModalStatus} 
+          shareModal={shareModal}
+          setShareModal={setShareModal}
           isLoading={isLoading}
           sideOpen={sideOpen}
         />
-        {modalStatus && (
-          <ContentForm onClose={() => setModalStatus(false)} onSubmit={handleContentSubmit} />
-        )}
-        {shareModal && (
-          <ShareModal onClick={() => setShareModal(false)} setShareModal={setShareModal}/>
-        )}
       </div>
     </>
   );
