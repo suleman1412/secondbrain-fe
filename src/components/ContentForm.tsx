@@ -36,23 +36,6 @@ const ContentForm: React.FC<ContentFormProps> = ({
   const isValidUrl = (url: string) =>
     /^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\/?.*$/.test(url);
 
-  const handleContentSubmit = (newContent: ContentType) => {
-    if(updateModal){
-      // Frontend updating to accomodate for the updated content.
-      console.log('in handleContentSubmit updateModal')
-      const updatedContent = contentStore.map(content => content.contentId === newContent.contentId ? newContent : content) 
-      setContentStore(updatedContent);
-      setDisplayedContent(updatedContent) 
-    } else{
-      // Frontend updating to accomodate for the new content.
-      setContentStore((prevContent) => [...prevContent, newContent]); // here the frontend and the backend are getting added in sync.
-      setDisplayedContent((prevContent) => [...prevContent, newContent]) 
-      console.log(contentStore)
-    }
-    onClose();
-
-  };
-
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim().toLowerCase())) {
       setTags((prev) => [...prev, newTag.trim().toLowerCase()]);
