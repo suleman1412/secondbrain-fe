@@ -34,13 +34,13 @@ const Login = () => {
 
       setIsLoading(true)
       const response = await axios.post(
-        `${BASE_URL}/user/login`,
+        `${BASE_URL}/user/login`, 
         validatedData
       )
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('token', response.data.token) 
         setShowAlert(true)
-        setisLoggedIn(true)
+        setisLoggedIn(true) 
         setTimeout(() => {
           navigate('dashboard')
           setShowAlert(false)
@@ -88,7 +88,7 @@ const Login = () => {
           setErrors({ password: 'Error setting up the request. Please try again.' });
         }
       } else {
-        setErrors({ password: 'An unexpected error occurred. Please try again.' });
+        setErrors({ password: 'Login failed. Please try again.' });
       }
     } finally {
       setIsLoading(false)
@@ -158,7 +158,5 @@ const Login = () => {
     </div>
   );
 };
-  // )
-// }
 
 export default Login

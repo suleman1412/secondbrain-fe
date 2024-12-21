@@ -1,28 +1,23 @@
-import { useRecoilValue } from "recoil"
+import { useRecoilValue, useSetRecoilState } from "recoil"
 import Button from "./ui/Button"
 import Heading from "./ui/Heading"
-import { shareLink } from "./recoil/atoms"
-interface ShareModalProps {
-    onClick: () => void
-    setShareModal: React.Dispatch<React.SetStateAction<boolean>>
-}
+import { shareLink, shareModal } from "./recoil/atoms"
 
-const ShareModal: React.FC<ShareModalProps> = ({
-    onClick,
-    setShareModal
+const ShareModal = ({
 }) => {
     
     const share = useRecoilValue(shareLink).toString()
+    const setShareModalStatus = useSetRecoilState(shareModal)
     const handleCopy = () => {
         navigator.clipboard.writeText(share)
-        setShareModal(false)
+        setShareModalStatus(false)
     }
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-5 rounded-lg shadow-xl relative w-[300px] md:w-[350px] text-[0.75rem] lg:text-[1rem] text-black font-font1">
                 <Button
                     variant="primary"
-                    onClick={onClick}
+                    onClick={() => setShareModalStatus(false)}
                     className="absolute top-3 right-4 text-gray-600 hover:text-gray-900"
                 >
                     ✕

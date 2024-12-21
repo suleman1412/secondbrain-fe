@@ -9,7 +9,7 @@ const ContentBlur:React.FC<ContentBlur> = ({
     children
 }) => {
   return (
-    <div className={`content px-10 py-5 flex-1 mt-8 md:mt-10  ${sideOpen && 'pointer-events-none opacity-80 blur-[1px]'}`}>
+    <div className={`content flex-1   ${sideOpen && 'pointer-events-none opacity-80 blur-[1px]'}`}>
         {children}
     </div>
   )

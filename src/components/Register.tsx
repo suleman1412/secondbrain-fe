@@ -73,10 +73,8 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
               setErrors({ password: errorMessage });
           }
         } else if (error.request) {
-          // The request was made but no response was received
           setErrors({ password: 'No response from server. Please check your connection.' });
         } else {
-          // Something happened in setting up the request that triggered an Error
           setErrors({ password: 'Error setting up the request. Please try again.' });
         }
       } else {

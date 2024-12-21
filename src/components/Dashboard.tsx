@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "./ui/Sidebar";
 import { useFetchContent } from "./hooks/useFetchContent";
 import Content from "./Content";
-import { allContentAtom, filteredContentAtom, isLoggedIn, shareLink } from "./recoil/atoms";
+import { allContentAtom, filteredContentAtom, isLoggedIn, shareLink, shareModal } from "./recoil/atoms";
 
 const Dashboard = () => {
   const token = localStorage.getItem("token") || "";
@@ -15,10 +15,11 @@ const Dashboard = () => {
   const contentstore = useRecoilValue(allContentAtom)
   const fetchContent = useFetchContent();
 
+  const setShareModalStatus = useSetRecoilState(shareModal)
+
+
   const [sideOpen, setSideOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalStatus, setModalStatus] = useState(false);
-  const [shareModal, setShareModal] = useState(false)
   
   useEffect(() => {
     if(userLogin && token){
@@ -32,8 +33,7 @@ const Dashboard = () => {
   }
 
   const handleShareLink = async () => {
-    setIsLoading(true);
-    setShareModal(true)
+    setShareModalStatus(true)
     try {
       const response = await axios.post(
         `${BASE_URL}/brain/share`,
@@ -44,9 +44,7 @@ const Dashboard = () => {
       setShareLink(`${import.meta.env.VITE_FRONTEND_URL}/shared/${hashedString}`);
     } catch (error) {
       console.error("Failed to generate share link:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   return (
@@ -59,13 +57,9 @@ const Dashboard = () => {
         showLogout={true}
         onLogout={onLogout}
       />
-      <div className="flex flex-col min-h-screen mx-auto max-w-7xl">
+      <div className="flex flex-col mx-auto max-w-7xl">
         <Content 
           handleShareLink={handleShareLink} 
-          modalStatus={modalStatus}
-          setModalStatus={setModalStatus} 
-          shareModal={shareModal}
-          setShareModal={setShareModal}
           isLoading={isLoading}
           sideOpen={sideOpen}
         />
