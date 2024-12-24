@@ -19,7 +19,6 @@ const Dashboard = () => {
 
 
   const [sideOpen, setSideOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     if(userLogin && token){
@@ -60,7 +59,6 @@ const Dashboard = () => {
       <div className="flex flex-col mx-auto max-w-7xl">
         <Content 
           handleShareLink={handleShareLink} 
-          isLoading={isLoading}
           sideOpen={sideOpen}
         />
       </div>

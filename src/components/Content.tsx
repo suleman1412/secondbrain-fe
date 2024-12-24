@@ -9,16 +9,16 @@ import { filteredContentAtom, modalStatus, shareModal } from './recoil/atoms'
 import ContentForm from './ContentForm'
 import ShareModal from './ShareModal'
 import SearchBar from './SearchBar'
+import SearchBox from './SearchBox'
+import KSLSearchBox from './ui/KSLSearchBox'
 
 interface ContentProps {
   handleShareLink: () => Promise<void>;
-  isLoading: boolean;
   sideOpen: boolean,
 }
 
 const Content: React.FC<ContentProps> = ({ 
   handleShareLink, 
-  isLoading,
   sideOpen,
   }) => {
     const isMobile = useMediaQuery()
@@ -56,9 +56,8 @@ const Content: React.FC<ContentProps> = ({
               </div>
             </div>
             <div className="cardsContainer grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
-              {isLoading ? (
-                <p>Loading...</p>
-              ) : displayedContent.length > 0 ? (
+              {displayedContent.length > 0 ? 
+                (
                   displayedContent.map((item) => (
                   <Card key={item.contentId} {...item} sideOpen={sideOpen}/> //Frontend updates automatically as displayedContent is a state variable
                 ))

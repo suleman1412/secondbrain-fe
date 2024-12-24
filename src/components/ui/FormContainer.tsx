@@ -7,7 +7,7 @@ interface FormContainerProps {
     subtitle?: string;
     children: React.ReactNode;
     onSubmit?: (e: FormEvent<HTMLFormElement>) => void | Promise<void>;
-    isLoading?: boolean;
+    authLoading?: boolean;
     className?: string;
 }
 

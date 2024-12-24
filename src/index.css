@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 body{
-    @apply bg-darkBackground;
-    @apply text-text
+    @apply bg-darkBackground text-text font-font1;
 }
 
 input::-ms-reveal {

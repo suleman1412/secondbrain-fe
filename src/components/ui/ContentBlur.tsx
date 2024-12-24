@@ -1,4 +1,5 @@
 import { HTMLAttributes } from "react"
+import { motion } from "framer-motion";
 
 interface ContentBlur extends HTMLAttributes<HTMLDivElement>  {
     sideOpen: boolean
@@ -9,9 +10,13 @@ const ContentBlur:React.FC<ContentBlur> = ({
     children
 }) => {
   return (
-    <div className={`content flex-1   ${sideOpen && 'pointer-events-none opacity-80 blur-[1px]'}`}>
-        {children}
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={`contentBlur flex-1 ${sideOpen && 'pointer-events-none  blur-[2px]'} `}>
+      {children}
+    </motion.div>
   )
 }
 
