@@ -9,8 +9,6 @@ import { filteredContentAtom, modalStatus, shareModal } from './recoil/atoms'
 import ContentForm from './ContentForm'
 import ShareModal from './ShareModal'
 import SearchBar from './SearchBar'
-import SearchBox from './SearchBox'
-import KSLSearchBox from './ui/KSLSearchBox'
 
 interface ContentProps {
   handleShareLink: () => Promise<void>;

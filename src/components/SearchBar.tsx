@@ -1,19 +1,25 @@
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Search } from "lucide-react";
+import {  LoaderCircle, Search } from "lucide-react";
 import Heading from "./ui/Heading";
 import SeachSuggestions from "./ui/SeachSuggestions";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { filteredContentAtom } from "./recoil/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
+import Card from "./Card";
+import { set } from "zod";
 
 const SearchBar = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement>(null)
     const [searchedTerm, setSearchedTerm] = useState("");
     const [isFocused, setIsFocused] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
+    const [searchResults, setSearchResults] = useState<string[]>([]);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const token = localStorage.getItem('token')
-    const [displayedContent, setDisplayedContent] = useRecoilState(filteredContentAtom)
+    const contentStore = useRecoilValue(allContentAtom)
+
     // To handle outside click
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -57,22 +63,27 @@ const SearchBar = () => {
                     { search: searchedTerm },
                     {headers: { Authorization: `Bearer ${token}` } }
                 );
-                const results: (string | number)[] = await response.data.search
-                console.log(results)
-                const updatedContent = displayedContent.filter(content =>
-                    results.includes(content.contentId) 
-                );
-    
-                setDisplayedContent(updatedContent);
-
-            }
+                const results: (string)[] = await response.data.search
+                const orderMap = new Map(results.map((id, index) => [id, index]));
+                
+                const sortedContent = [...contentStore].sort((a, b) => {
+                    const indexA = orderMap.get(a.contentId!) ?? Infinity;
+                    const indexB = orderMap.get(b.contentId!) ?? Infinity;
+                    return indexA - indexB;
+                });
+                
+                setSearchResults(sortedContent.map(content => content.title!).slice(0,3))
+                }
         } catch (e) {
             console.error("Error during vector search: ",e)
-        } 
+        } finally{
+            setIsLoading(false)
+        }
     }
 
     // Debouncer
     useEffect(() => {
+        setSearchResults([])
         const debounceTimeout = setTimeout(() => {
             vectorSearch()
         }, 1000)
@@ -80,12 +91,15 @@ const SearchBar = () => {
         return () => clearTimeout(debounceTimeout)
     }, [searchedTerm])
 
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setIsFocused(false)
-        if(e.target.value === ''){
-            setIsFocused(true)
-        }
         setSearchedTerm(e.target.value);
+        setIsFocused(true)
+        if(e.target.value === ''){
+            setIsLoading(false)
+        }else{
+            setIsLoading(true)
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -115,7 +129,8 @@ const SearchBar = () => {
                             </div>
                         </button>
                     </form>
-                    {isFocused && <SeachSuggestions />}
+                    {isFocused &&  <SeachSuggestions isLoading={isLoading} searchResults={searchResults} />}
+                    {}
                 </div>
             </div>
         </div>
