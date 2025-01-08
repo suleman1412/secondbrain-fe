@@ -8,7 +8,6 @@ import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
 import { isLoggedIn } from './recoil/atoms'
 import FormContainer from './ui/FormContainer'
-import { useNavigate } from 'react-router-dom'
 
 interface FormErrors {
   username?: string
