@@ -47,7 +47,3 @@ A modern knowledge management tool that empowers users to save, organize, and ef
 - Expand vector search capabilities to support multimedia (e.g., images and videos).  
 - Add collaborative features for team-based knowledge management.  
 - Optimize the UI library for broader use in other projects.
-
-### Contributions  
-Contributions, suggestions, and feedback are welcome! Feel free to fork the repository, open an issue, or submit a pull request.  
-

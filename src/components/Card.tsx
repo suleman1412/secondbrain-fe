@@ -14,12 +14,12 @@ const TypeStyles: { [key: string]: JSX.Element } = {
 };
 
 export interface ContentType {
-    title: string;
-    type: string;
-    tags: Tags[];
-    link: string;
-    createdAt: string;
-    contentId: string;
+    title?: string;
+    type?: string;
+    tags?: Tags[];
+    link?: string;
+    createdAt?: string;
+    contentId?: string;
 }
 
 
@@ -68,7 +68,7 @@ const Card: React.FC<CardType> = ({
         <div className="bg-cardColor-1  border-2 border-border rounded-lg px-4 py-2 shadow-md relative">
             <div className="flex justify-between">
                 <div className="flex gap-2 items-center">
-                    {TypeStyles[type]}
+                    {TypeStyles[type!]}
                     <span className=" font-font1 text-[1rem] md:text[1.1rem] lg:text-[1.2rem] font-semibold tracking-normal break-words w-full line-clamp-2">{title}</span>
                 </div>
                 {

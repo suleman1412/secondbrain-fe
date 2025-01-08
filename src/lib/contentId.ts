@@ -1,4 +1,4 @@
-import { SHA256 } from 'crypto-js'
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Tags{
     tagId: string,
@@ -13,13 +13,11 @@ export interface ContentPayload{
 }
 
 const enrichContent = (newContent: ContentPayload) => {
-    console.log("Before Enriching Data: ", newContent);
-    const token = localStorage.getItem('token')
     if(!newContent.contentId){
-        newContent.contentId = SHA256(token + newContent.title + Date.now().toString()).toString();
+        newContent.contentId = uuidv4()
     }
-    const enrichedTags: Tags[] = newContent.tags.map((tag, index) => ({
-        tagId: SHA256(tag + index + Date.now().toString()).toString(), 
+    const enrichedTags: Tags[] = newContent.tags.map((tag) => ({
+        tagId: uuidv4(), 
         title: tag,
     }));
     return {

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode dev",
+    "dev": "vite",
     "build": "tsc -b && vite build --mode prod",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -15,11 +15,13 @@
     "axios": "^1.7.7",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.7",
+    "framer-motion": "^11.15.0",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
     "recoil": "^0.7.7",
+    "uuid": "^11.0.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {

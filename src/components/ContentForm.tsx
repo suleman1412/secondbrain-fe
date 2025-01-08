@@ -34,7 +34,8 @@ const ContentForm: React.FC<ContentFormProps> = ({
   const contentTypes = ["image", "video", "article", "audio"];
 
   const isValidUrl = (url: string) =>
-    /^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\/?.*$/.test(url);
+    /^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/.*)?$/.test(url);
+  
 
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim().toLowerCase())) {
@@ -90,6 +91,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
         setDisplayedContent((prevContent) => [...prevContent, enrichedContent])
         onClose();
         try{
+          console.log(enrichedContent)
           await axios.post(
             `${BASE_URL}/content`,
             enrichedContent,

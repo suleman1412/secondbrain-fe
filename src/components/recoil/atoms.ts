@@ -35,3 +35,13 @@ export const userId = atom<string>({
     key: 'userId',
     default: ''
 })
+
+export const modalStatus = atom<boolean>({
+    key: 'modalStatus',
+    default: false
+})
+
+export const shareModal = atom<boolean>({
+    key: 'shareModal',
+    default: false
+})

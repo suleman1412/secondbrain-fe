@@ -16,7 +16,7 @@ interface FormErrors {
 const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>> }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [authLoading, setauthLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -29,7 +29,7 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
     try {
       const validatedData = AuthSchema.parse({ username, password })
   
-      setIsLoading(true)
+      setauthLoading(true)
       const response = await axios.post(
         `${BASE_URL}/user/register`,
         validatedData
@@ -73,10 +73,8 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
               setErrors({ password: errorMessage });
           }
         } else if (error.request) {
-          // The request was made but no response was received
           setErrors({ password: 'No response from server. Please check your connection.' });
         } else {
-          // Something happened in setting up the request that triggered an Error
           setErrors({ password: 'Error setting up the request. Please try again.' });
         }
       } else {
@@ -84,7 +82,7 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
         setErrors({ password: 'Registration failed. Please try again.' });
       }
     } finally {
-      setIsLoading(false)
+      setauthLoading(false)
     }
   }
 
@@ -108,7 +106,7 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
           title="Create an Account"
           subtitle="Join us today!"
           onSubmit={handleSubmit}
-          isLoading={isLoading}
+          authLoading={authLoading}
           variant={false}
         >
           <div>
@@ -116,7 +114,7 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
               value={username}
               onChange={handleUsernameChange}
               placeholder='Username...'
-              disabled={isLoading}
+              disabled={authLoading}
               label={'Username'}
               inputId={'Username'}
             />
@@ -131,7 +129,7 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
               onChange={handlePasswordChange}
               type='password'
               placeholder='Password...'
-              disabled={isLoading}
+              disabled={authLoading}
               label={'Password'}
               inputId={'Password'}
             />
@@ -140,8 +138,8 @@ const Register = ({ setCurrent }: { setCurrent: Dispatch<SetStateAction<string>>
             )}
           </div>
     
-          <Button type='submit' variant='primary' disabled={isLoading}>
-            {isLoading ? 'Registering...' : 'Register'}
+          <Button type='submit' variant='primary' disabled={authLoading}>
+            {authLoading ? 'Registering...' : 'Register'}
           </Button>
         </FormContainer>
         {showAlert && (

@@ -8,7 +8,6 @@ import Alert from './ui/Alert'
 import { useSetRecoilState } from 'recoil'
 import { isLoggedIn } from './recoil/atoms'
 import FormContainer from './ui/FormContainer'
-import { useNavigate } from 'react-router-dom'
 
 interface FormErrors {
   username?: string
@@ -16,10 +15,9 @@ interface FormErrors {
 }
 
 const Login = () => {
-  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [authLoading, setauthLoading] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [showAlert, setShowAlert] = useState(false)
   const setisLoggedIn = useSetRecoilState(isLoggedIn)
@@ -32,17 +30,16 @@ const Login = () => {
     try {
       const validatedData = AuthSchema.parse({ username, password })
 
-      setIsLoading(true)
+      setauthLoading(true)
       const response = await axios.post(
-        `${BASE_URL}/user/login`,
+        `${BASE_URL}/user/login`, 
         validatedData
       )
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token)
         setShowAlert(true)
-        setisLoggedIn(true)
         setTimeout(() => {
-          navigate('dashboard')
+          setisLoggedIn(true) 
+          localStorage.setItem('token', response.data.token) 
           setShowAlert(false)
         }, 1000)
       }
@@ -88,10 +85,10 @@ const Login = () => {
           setErrors({ password: 'Error setting up the request. Please try again.' });
         }
       } else {
-        setErrors({ password: 'An unexpected error occurred. Please try again.' });
+        setErrors({ password: 'Login failed. Please try again.' });
       }
     } finally {
-      setIsLoading(false)
+      setauthLoading(false)
     }
   }
 
@@ -115,7 +112,7 @@ const Login = () => {
       title="Login"
       subtitle="Welcome back! "
       onSubmit={handleSubmit}
-      isLoading={isLoading}
+      authLoading={authLoading}
       setUsername={setUsername}
       setPassword={setPassword}
     >
@@ -124,7 +121,7 @@ const Login = () => {
           value={username}
           onChange={handleUsernameChange}
           placeholder='Username...'
-          disabled={isLoading}
+          disabled={authLoading}
           label={'Username'}
           inputId={'username'}
         />
@@ -139,7 +136,7 @@ const Login = () => {
           onChange={handlePasswordChange}
           type='password'
           placeholder='Password...'
-          disabled={isLoading}
+          disabled={authLoading}
           label={'Password'}
           inputId={'password'}
         />
@@ -148,8 +145,8 @@ const Login = () => {
         )}
       </div>
 
-      <Button type='submit' variant='primary' disabled={isLoading}>
-        {isLoading ? 'Logging in...' : 'Login'}
+      <Button type='submit' variant='primary' disabled={authLoading}>
+        {authLoading ? 'Logging in...' : 'Login'}
       </Button>
     </FormContainer>
     {showAlert && (
@@ -158,7 +155,5 @@ const Login = () => {
     </div>
   );
 };
-  // )
-// }
 
 export default Login
