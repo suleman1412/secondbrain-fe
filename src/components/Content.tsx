@@ -28,7 +28,7 @@ const Content: React.FC<ContentProps> = ({
     <>
       <ContentBlur sideOpen={sideOpen}>
         <div className='layoutContainer flex flex-col px-10 py-10 gap-10'>
-          <SearchBar />
+          <SearchBar contentStore={displayedContent}/>
           <div className='contentContainer min-h-[80vh]'>
             <div className="flex justify-between items-center gap-2">
               <Heading variant="primary" size={`${isMobile ? 'jsm' : 'md'}`}>What I'm Learning</Heading>

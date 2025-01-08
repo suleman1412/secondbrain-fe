@@ -2,10 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import {  Search } from "lucide-react";
 import SeachSuggestions from "./ui/SeachSuggestions";
 import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { allContentAtom } from "./recoil/atoms";
+import { ContentType } from "./Card";
 
-const SearchBar = () => {
+interface SearchBarProps{
+    contentStore: ContentType[]
+}
+const SearchBar: React.FC<SearchBarProps> = ({
+    contentStore
+}) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement>(null)
     const [searchedTerm, setSearchedTerm] = useState("");
@@ -14,7 +18,7 @@ const SearchBar = () => {
     const [searchResults, setSearchResults] = useState<{ title: string, link: string}[]>([]);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const token = localStorage.getItem('token')
-    const contentStore = useRecoilValue(allContentAtom)
+    // const contentStore = useRecoilValue(allContentAtom)
 
     // To handle outside click
     useEffect(() => {
