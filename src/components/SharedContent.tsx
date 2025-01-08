@@ -50,7 +50,7 @@ function SharedContent() {
             <div className='flex flex-col min-h-screen mx-auto max-w-7xl'>
                 <div className='flex-1'>
                     <ContentBlur sideOpen={sideOpen}>
-                        <div className='flex flex-col gap-5 pt-10'>
+                        <div className='flex flex-col gap-5 px-10 py-10'>
                             {/* @ts-ignore */}
                             <Heading variant="primary" size={`${isMobile ? 'jsm' : 'md'}`}>{`${username?.charAt(0).toUpperCase() + username?.slice(1)}'s Brain`}</Heading>
                             <SearchBar contentStore={contentStore}/>
