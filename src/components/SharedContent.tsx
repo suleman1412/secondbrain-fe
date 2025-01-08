@@ -6,6 +6,7 @@ import Sidebar from './ui/Sidebar'
 import Heading from './ui/Heading'
 import { useMediaQuery } from './hooks/useMediaQuery'
 import ContentBlur from './ui/ContentBlur'
+import SearchBar from './SearchBar'
 
 function SharedContent() {
     const { sharelink } = useParams()
@@ -49,9 +50,10 @@ function SharedContent() {
             <div className='flex flex-col min-h-screen mx-auto max-w-7xl'>
                 <div className='flex-1'>
                     <ContentBlur sideOpen={sideOpen}>
-                        <div>
+                        <div className='flex flex-col gap-5 pt-10'>
                             {/* @ts-ignore */}
                             <Heading variant="primary" size={`${isMobile ? 'jsm' : 'md'}`}>{`${username?.charAt(0).toUpperCase() + username?.slice(1)}'s Brain`}</Heading>
+                            <SearchBar contentStore={contentStore}/>
                             <div className='cardsContainer grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4'>
                             {displayedContent.length > 0 ? (
                                 displayedContent.map((item) => (
