@@ -4,7 +4,7 @@ import { modalStatus, shareModal } from "../recoil/atoms"
 
 interface SearchSuggestionsType{
     isLoading: boolean,
-    searchResults: string[]
+    searchResults: { title: string, link: string}[]
 }
 
 const SeachSuggestions : React.FC<SearchSuggestionsType> = ({
@@ -17,12 +17,12 @@ const SeachSuggestions : React.FC<SearchSuggestionsType> = ({
         {
             icon: <PlusIcon />,
             text: "Add new memory",
-            onClick: () => handleAddMemory
+            onClick: () => handleAddMemory()
         },
         {
             icon: <Share2 />,
             text: "Share your memories",
-            onClick: () => handleShareMemory
+            onClick: () => handleShareMemory()
         }
     ]
 
@@ -36,7 +36,7 @@ const SeachSuggestions : React.FC<SearchSuggestionsType> = ({
         setShareModalStatus(true)
     }
     return (
-    <div className="absolute bg-cardColor-2 rounded-lg top-[50%] w-full h-[200px] pt-10 px-5 flex gap-2 flex-col"> 
+    <div className="absolute bg-cardColor-2 rounded-lg top-[50%] w-full h-fit pt-10 pb-4 px-5 flex gap-2 flex-col"> 
         {isLoading ? (
             <div className="py-10 text-center text-gray-600">
                 <Loader className="w-8 h-8 mx-auto animate-spin duration-[2000ms]" />
@@ -45,18 +45,21 @@ const SeachSuggestions : React.FC<SearchSuggestionsType> = ({
         :   (
             searchResults.length > 0 ? (
                 searchResults.map((result, index) => (
-                    <div
-                        key={index}
-                        className="py-2 cursor-pointer hover:bg-cardColor-1 rounded-md text-gray-600 hover:text-gray-200 transition-colors flex gap-2 shadow-md"
-                    >
-                        {result}
-                    </div>
+                    <a href={result.link} target="__blank">
+                        <div
+                            key={index}
+                            className="p-2 cursor-pointer hover:bg-cardColor-1 rounded-md text-gray-600 hover:text-gray-200 transition-colors flex gap-2 shadow-md"
+                        >
+                            
+                                {result.title}
+                        </div>
+                    </a>
                 ))
             ) : (
                 defaultOptions.map((option, index) => (
                     <div
                         key={index}
-                        className="py-2 cursor-pointer hover:bg-cardColor-1 rounded-md text-gray-600 hover:text-gray-200 transition-colors flex gap-2 shadow-md"
+                        className="p-2  cursor-pointer hover:bg-cardColor-1 rounded-md text-gray-600 hover:text-gray-200 transition-colors flex gap-2 shadow-md"
                         onClick={option.onClick}
                     >
                         {option.icon} {option.text}

@@ -1,13 +1,9 @@
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import {  LoaderCircle, Search } from "lucide-react";
-import Heading from "./ui/Heading";
+import {  Search } from "lucide-react";
 import SeachSuggestions from "./ui/SeachSuggestions";
 import axios from "axios";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { allContentAtom, filteredContentAtom } from "./recoil/atoms";
-import Card from "./Card";
-import { set } from "zod";
+import { useRecoilValue } from "recoil";
+import { allContentAtom } from "./recoil/atoms";
 
 const SearchBar = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -15,7 +11,7 @@ const SearchBar = () => {
     const [searchedTerm, setSearchedTerm] = useState("");
     const [isFocused, setIsFocused] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
-    const [searchResults, setSearchResults] = useState<string[]>([]);
+    const [searchResults, setSearchResults] = useState<{ title: string, link: string}[]>([]);
     const BASE_URL = import.meta.env.VITE_BASE_URL;
     const token = localStorage.getItem('token')
     const contentStore = useRecoilValue(allContentAtom)
@@ -72,7 +68,10 @@ const SearchBar = () => {
                     return indexA - indexB;
                 });
                 
-                setSearchResults(sortedContent.map(content => content.title!).slice(0,3))
+                setSearchResults(sortedContent.slice(0,3).map(content => ({
+                    link: content.link!,
+                    title: content.title!
+                })))
                 }
         } catch (e) {
             console.error("Error during vector search: ",e)
@@ -102,33 +101,32 @@ const SearchBar = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Searched for:", searchedTerm);
-    };
 
     return (
-        <div className="flex flex-col justify-center h-[80vh] items-center gap-4">
-            <Heading variant="primary" className="text-center">
+        <div className="flex flex-col  gap-4 z-10">
+            {/* <Heading variant="primary" className="text-center">
                 <span className="text-[1.2rem] md:text-[4rem]">What would you like to do?</span>
-            </Heading>
-            <div ref={containerRef} className="w-[85%] text-[0.8rem] md:text-[1rem]">
+            </Heading> */}
+            <div ref={containerRef} className="w-[100%] text-[0.8rem] md:text-[1rem]">
                 <div className="flex relative flex-col">
-                    <form onSubmit={handleSubmit} className="z-10">
+                    <div  className="z-10">
                         <input
                             ref = {inputRef}
                             value={searchedTerm} 
                             onChange={handleInputChange} 
-                            className="w-full bg-cardColor-2 py-4 px-6 rounded-full shadow-md pr-14"
+                            className="w-full bg-cardColor-2 py-4 px-6 rounded-full shadow-md pr-14 pl-14"
                             placeholder="Search your memories..."
                             onFocus={() => setIsFocused(true)}
                         />
-                        <button type="submit">
-                            <div className="absolute right-3 top-[50%] -translate-y-[50%] rounded-full bg-white text-black p-1.5">
+                        <div>
+                            <div className="absolute left-3 top-[50%] -translate-y-[50%] rounded-full bg-white text-black p-1.5">
                                 <Search className="w-4 h-4 md:w-6 md:h-6" />
                             </div>
-                        </button>
-                    </form>
+                            <div className="absolute right-3 top-[50%] -translate-y-[50%]  text-gray-600 p-1.5 font-light tracking-normal">
+                                Ctrl + K
+                            </div>
+                        </div>
+                    </div>
                     {isFocused &&  <SeachSuggestions isLoading={isLoading} searchResults={searchResults} />}
                     {}
                 </div>

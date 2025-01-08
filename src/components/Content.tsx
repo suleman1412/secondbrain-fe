@@ -27,7 +27,7 @@ const Content: React.FC<ContentProps> = ({
     return (
     <>
       <ContentBlur sideOpen={sideOpen}>
-        <div className='layoutContainer flex flex-col px-10 py-5 gap-[30vh]'>
+        <div className='layoutContainer flex flex-col px-10 py-10 gap-10'>
           <SearchBar />
           <div className='contentContainer min-h-[80vh]'>
             <div className="flex justify-between items-center gap-2">
